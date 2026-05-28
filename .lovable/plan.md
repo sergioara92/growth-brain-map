@@ -1,17 +1,11 @@
-## Stage 2A — visible roads, working Next button, larger desktop sizes
+## Execute
 
-### `src/components/explorable/Stage2A.tsx`
-- Grid: `SPACING` 100 → 116, `PAD` 50 → 58 (footprint ~348×348).
-- Level 0 connection style: solid `#3D2F66` width 4, no dasharray (visible "unbuilt road").
-- Building SVG: base 24×28 → 30×34, windows scaled proportionally, translate offset adjusted.
-- Neuron SVG: body radius 16 → 18, dendrite arm length 22 → 26, axon 18 → 22.
-- Left column title: add `md:text-[26px]` (keeps 22px mobile).
-- Body paragraphs: `fontSize` 16 → 17, `maxWidth` 380 → 420.
-- Progress label: 16px, more top margin.
-- Next button: render from start in the left column. Disabled until `level2plus >= 4`. Pulses once when it transitions to enabled.
+### 1. Stage2A road progression (monotonic, no dashing)
+`src/components/explorable/Stage2A.tsx` — replace `cityLineProps`:
+- L0 `#4A3B7A` w1.5 · L1 `#A0743A` w4 · L2 `#BBBBBB` w5 · L3 `#FFFFFF` w6 · L4 `#FFD166` w7 + goldGlow
 
-### `src/components/explorable/Stage2B.tsx`
-- Title: add `md:text-[26px]`.
-- Body `fontSize` 16 → 17.
+### 2. Neutral Spanish sweep
+Replace voseo with tuteo in all ES strings across:
+- i18n.ts, Stage1.tsx, Stage2.tsx, Stage2A.tsx, Stage2B.tsx, Stage3.tsx, Stage4.tsx, Stage5.tsx, Stage6.tsx, ProgressBar.tsx
 
-No other files touched. All ES/EN copy, animations, banner, particle effects, divider, BrainScanner, other stages remain unchanged.
+Conversions: Hacé→Haz, Reemplazá→Reemplaza, Elegí→Elige, Mirá→Mira, Probá→Prueba, Pensá→Piensa, Buscá→Busca, Acordate→Recuerda, Tomate→Tómate; aprendés→aprendes, tenés→tienes, practicás→practicas, podés→puedes, querés→quieres, sos→eres, construís→construyes, pavimentás→pavimentas, ensanchás→ensanchas, esforzás→esfuerzas, andás→andas; vos→tú. English untouched.
