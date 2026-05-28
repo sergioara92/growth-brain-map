@@ -321,28 +321,28 @@ export default function Stage2A({
                   <g key={`nr-${r}-${c}`} style={{ transform: `scale(${scale})`, transformOrigin: `${p.x}px ${p.y}px`, transition: "transform 300ms" }}>
                     {[0, 60, 120, 180, 240, 300].map((deg, i) => {
                       const a = (deg * Math.PI) / 180;
-                      const startX = p.x + Math.cos(a) * (16 + armOffset);
-                      const startY = p.y + Math.sin(a) * (16 + armOffset);
-                      const endX = p.x + Math.cos(a) * (16 + armOffset + 22);
-                      const endY = p.y + Math.sin(a) * (16 + armOffset + 22);
+                      const startX = p.x + Math.cos(a) * (18 + armOffset);
+                      const startY = p.y + Math.sin(a) * (18 + armOffset);
+                      const endX = p.x + Math.cos(a) * (18 + armOffset + 26);
+                      const endY = p.y + Math.sin(a) * (18 + armOffset + 26);
                       const fork1A = a - 0.45;
                       const fork2A = a + 0.45;
-                      const f1x = endX + Math.cos(fork1A) * 10;
-                      const f1y = endY + Math.sin(fork1A) * 10;
-                      const f2x = endX + Math.cos(fork2A) * 10;
-                      const f2y = endY + Math.sin(fork2A) * 10;
+                      const f1x = endX + Math.cos(fork1A) * 12;
+                      const f1y = endY + Math.sin(fork1A) * 12;
+                      const f2x = endX + Math.cos(fork2A) * 12;
+                      const f2y = endY + Math.sin(fork2A) * 12;
                       return (
                         <g key={i}>
-                          <line x1={startX} y1={startY} x2={endX} y2={endY} stroke={dendStroke} strokeWidth={1.2} style={{ transition: "stroke 300ms" }} />
-                          <line x1={endX} y1={endY} x2={f1x} y2={f1y} stroke={dendStroke} strokeWidth={1} />
-                          <line x1={endX} y1={endY} x2={f2x} y2={f2y} stroke={dendStroke} strokeWidth={1} />
+                          <line x1={startX} y1={startY} x2={endX} y2={endY} stroke={dendStroke} strokeWidth={1.4} style={{ transition: "stroke 300ms" }} />
+                          <line x1={endX} y1={endY} x2={f1x} y2={f1y} stroke={dendStroke} strokeWidth={1.1} />
+                          <line x1={endX} y1={endY} x2={f2x} y2={f2y} stroke={dendStroke} strokeWidth={1.1} />
                         </g>
                       );
                     })}
                     {/* axon */}
-                    <line x1={p.x} y1={p.y + 16} x2={p.x + 4} y2={p.y + 34} stroke={dendStroke} strokeWidth={2} />
-                    {lit && <circle cx={p.x} cy={p.y} r={22} fill="url(#neuronBodyGlow)" />}
-                    <circle cx={p.x} cy={p.y} r={16} fill="#1A0A3B" stroke="#00C2C7" strokeWidth={1.5} />
+                    <line x1={p.x} y1={p.y + 18} x2={p.x + 5} y2={p.y + 40} stroke={dendStroke} strokeWidth={2.2} />
+                    {lit && <circle cx={p.x} cy={p.y} r={26} fill="url(#neuronBodyGlow)" />}
+                    <circle cx={p.x} cy={p.y} r={18} fill="#1A0A3B" stroke="#00C2C7" strokeWidth={1.5} />
                   </g>
                 );
               }),
