@@ -215,7 +215,7 @@ export default function Stage1({
       <p className="text-sm text-[color:var(--muted)] mt-2">
         {t(
           lang,
-          "No hay respuestas correctas. Solo queremos saber qué pensás ahora.",
+          "No hay respuestas correctas. Solo queremos saber qué piensas ahora.",
           "There are no right answers. We just want to know what you think right now.",
         )}
       </p>
