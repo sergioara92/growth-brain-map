@@ -182,6 +182,23 @@ export default function Stage2A({
                   const lvl = connections[e.id] ?? 0;
                   const p1 = pos(...e.from);
                   const p2 = pos(...e.to);
+                  if (lvl === 4) {
+                    const dx = p2.x - p1.x;
+                    const dy = p2.y - p1.y;
+                    const len = Math.hypot(dx, dy);
+                    const angle = (Math.atan2(dy, dx) * 180) / Math.PI;
+                    return (
+                      <g key={e.id} transform={`translate(${p1.x} ${p1.y}) rotate(${angle})`} style={{ transition: "all 300ms" }}>
+                        {/* asphalt */}
+                        <rect x={0} y={-9} width={len} height={18} fill="#2A2A33" stroke="#1A1A22" strokeWidth={0.5} />
+                        {/* curbs */}
+                        <rect x={0} y={-9} width={len} height={1.5} fill="#FFD166" filter="url(#goldGlow)" />
+                        <rect x={0} y={7.5} width={len} height={1.5} fill="#FFD166" filter="url(#goldGlow)" />
+                        {/* dashed center line */}
+                        <line x1={0} y1={0} x2={len} y2={0} stroke="#FFE699" strokeWidth={1.4} strokeDasharray="7 5" opacity={0.95} />
+                      </g>
+                    );
+                  }
                   const lp = cityLineProps(lvl);
                   return (
                     <line key={e.id} x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} {...lp} style={{ transition: "all 300ms" }} />
@@ -266,7 +283,7 @@ export default function Stage2A({
             <p className="text-[12px] uppercase tracking-[0.15em] text-[color:var(--teal)] mb-2">
               {t(lang, "Neuronas", "Neurons")}
             </p>
-            <svg width={SIZE} height={SIZE} className="max-w-full">
+            <svg width={SIZE} height={SIZE} viewBox={`-30 -30 ${SIZE + 60} ${SIZE + 60}`} className="max-w-full">
               <defs>
                 <filter id="teaLineGlow" x="-50%" y="-50%" width="200%" height="200%">
                   <feGaussianBlur stdDeviation="2.5" result="b" />
