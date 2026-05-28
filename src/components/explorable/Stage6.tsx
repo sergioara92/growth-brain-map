@@ -54,7 +54,7 @@ export default function Stage6({
   }
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-8 fade-in">
+    <div className="max-w-2xl mx-auto px-4 py-4 fade-in">
       <h2 className="text-xl font-bold text-[color:var(--teal)] text-center">
         {t(lang, "¿Y vos? ¿Qué pensás ahora?", "And you? What do you think now?")}
       </h2>
