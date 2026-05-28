@@ -4,8 +4,8 @@ import { t } from "./i18n";
 import { NextButton } from "./buttons";
 
 const GRID = 3;
-const SPACING = 116;
-const PAD = 58;
+const SPACING = 140;
+const PAD = 60;
 const SIZE = PAD * 2 + (GRID - 1) * SPACING;
 
 type Edge = { id: string; from: [number, number]; to: [number, number] };
