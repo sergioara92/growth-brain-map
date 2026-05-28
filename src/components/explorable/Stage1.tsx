@@ -3,7 +3,7 @@ import type { Lang } from "./i18n";
 import { t } from "./i18n";
 import Slider6 from "./Slider6";
 import { NextButton } from "./buttons";
-import brainHero from "@/assets/brain-hero.png";
+import BrainSupernova from "./BrainSupernova";
 
 type Beliefs = { b1: number | null; b2: number | null; b3: number | null };
 
@@ -105,12 +105,9 @@ export default function Stage1({
               </div>
             </div>
             <div className="stage1-brain-wrap order-1 md:order-2 flex justify-center">
-              <img
-                src={brainHero}
-                alt={t(lang, "Cerebro neon brillante", "Glowing neon brain")}
-                className="stage1-brain w-auto max-h-[42vh] md:max-h-[68vh] object-contain"
-                width={1024}
-                height={1024}
+              <BrainSupernova
+                alt={t(lang, "Cerebro neon brillante con neuronas encendiéndose", "Glowing neon brain with firing neurons")}
+                className="stage1-brain"
               />
             </div>
           </div>
