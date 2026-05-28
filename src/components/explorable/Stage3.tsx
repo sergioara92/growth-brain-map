@@ -111,10 +111,15 @@ export default function Stage3({
           </div>
         </div>
 
-        <div className="flex flex-col items-center justify-start" style={{ animation: "slideUp 400ms ease-out" }}>
-          <BrainScanner zones={zones} label={scannerLabel} size="medium" />
+        <div className="flex flex-col items-center justify-center" style={{ animation: "slideUp 400ms ease-out" }}>
+          <div className="hidden lg:block">
+            <BrainScanner zones={zones} label={scannerLabel} size="large" />
+          </div>
+          <div className="lg:hidden">
+            <BrainScanner zones={zones} label={scannerLabel} size="medium" />
+          </div>
           {reflectionShown && choice && (
-            <p className="mt-4 text-sm text-center max-w-sm fade-in italic text-[color:var(--muted)]">
+            <p className="mt-4 text-sm md:text-base text-center max-w-sm fade-in italic text-[color:var(--muted)]">
               {choice === "easy"
                 ? t(
                     lang,
