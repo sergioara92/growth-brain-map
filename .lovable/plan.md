@@ -1,46 +1,48 @@
-# Stage 1 beliefs screen — desktop layout
+# Stage 2A — desktop layout
 
 ## Scope
-Only `src/components/explorable/Stage1.tsx`, the slider screen (the `revealed === true` branch). Intro screen is not touched.
+Only `src/components/explorable/Stage2A.tsx`.
 
-## Problem
-The three belief statements stack vertically in a narrow `max-w-2xl` column. On a 1454×887 desktop everything bunches at the top and the bottom half is empty — wastes the horizontal space, and the three statements feel cramped together.
+## Problems
+- Right panel stacks the City and the Neurons vertically at a tiny ~348px size — wastes the ~700px-wide right column and forces the page to feel cramped + scrollable.
+- Left text column is narrow and short; the right side dominates with empty bottom space below the neurons.
 
-## Layout
+## Changes
 
-Use a 3-column card layout that fills the desktop width and is vertically centered in the viewport.
+### 1. Bigger grid art
+Bump grid constants so each SVG fills more space:
+- `SPACING`: 116 → 140
+- `PAD`: 58 → 60
+- New `SIZE` = 60·2 + 2·140 = 400px
+
+### 2. Side-by-side City + Neurons
+Restructure the right panel to show both visualizations next to each other instead of stacked.
 
 ```text
-+------------------------------------------------------------+
-|   ¿Qué tan de acuerdo estás con las siguientes ideas?      |
-|   No hay respuestas correctas...                           |
-|                                                            |
-|   +----------+     +----------+     +----------+           |
-|   | Idea 1   |     | Idea 2   |     | Idea 3   |           |
-|   | slider   |     | slider   |     | slider   |           |
-|   +----------+     +----------+     +----------+           |
-|                                                            |
-|                    [ Siguiente → ]                         |
-+------------------------------------------------------------+
++----------------------+-----------------------------+
+|  Headline            |  Ciudad         Neuronas    |
+|  Text paragraphs     |  [city svg]     [neurons]   |
+|  Progress label      |                             |
+|  [Siguiente]         |  Calles: N | Autopistas: N  |
++----------------------+-----------------------------+
 ```
 
-### Container
-- Wrap in `h-[calc(100vh-120px)] flex flex-col justify-center max-w-6xl mx-auto px-6`.
-- Header block (title + subtitle) centered, `mb-12`.
+- Outer: `max-w-7xl mx-auto px-6 grid lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.6fr)] gap-10 items-center min-h-[calc(100vh-100px)]`.
+- Right panel: keep the rounded panel + animated `bg` color, but inner layout becomes `grid grid-cols-1 xl:grid-cols-2 gap-6 items-start`. Each half has a small caption header (`Ciudad` / `Neuronas`) above its SVG.
+- Delete the horizontal divider with "Lo mismo, visto de dos formas" — the side-by-side framing makes it redundant. (Below md, the two SVGs stack and we keep a single inline caption.)
+- Move the "Calles construidas / Autopistas" counter to span the full panel width below both views.
 
-### Cards (3-column grid)
-- `grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8`.
-- Each card: subtle panel — `rounded-2xl border border-white/8 bg-white/[0.03] p-6 backdrop-blur-sm`, with hover lift (`hover:border-[color:var(--teal)]/40 hover:bg-white/[0.05]`, `transition`).
-- Card content: statement text (centered, `text-base lg:text-lg font-semibold min-h-[5rem]` so cards align even with different text lengths) + slider below with `mt-6`.
-- Stagger the fade-in animation: 0ms / 150ms / 300ms.
+### 3. Hint anchor
+The onboarding hint absolutely-positions over the city SVG using raw pixel coordinates. Keep the city SVG container at fixed `width/height: SIZE` (not stretched) so those coordinates stay valid. Center each SVG inside its column with `mx-auto`.
 
-### CTA
-- `mt-12 flex justify-center`, keeps existing `NextButton`.
+### 4. Text column polish
+- Headline `text-[28px] md:text-[32px]`.
+- Body `fontSize: 18, lineHeight: 1.65`, drop `maxWidth: 420` (let it fill the column up to ~480px).
+- Progress label `mt-5`; Next button block `mt-7`.
 
-### Mobile (<md)
-- Stack to single column, keep cards.
+### 5. Banner positioning
+The success banner currently sits at the top of the right panel. Keep it; it will span the full width of the inner grid (`absolute top-0 left-0 right-0 z-10`).
 
 ## What does NOT change
-- Slider component itself (`Slider6`), copy strings, `beliefs` state shape, `NextButton` behavior, `allSet` logic.
-- Intro screen (already redesigned).
+- All copy strings, animation behavior, click-to-build logic, particles, level thresholds, `cityLineProps`, neuron rendering, color tokens.
 - Other stages.
