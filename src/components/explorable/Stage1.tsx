@@ -127,31 +127,43 @@ export default function Stage1({
   const values = [beliefs.b1, beliefs.b2, beliefs.b3];
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-4 slide-up">
-      <h2 className="text-xl font-bold text-[color:var(--teal)]">
-        {t(lang, "¿Qué tan de acuerdo estás con las siguientes ideas?", "How much do you agree with the following ideas?")}
-      </h2>
-      <p className="text-sm text-[color:var(--muted)] mt-1">
-        {t(
-          lang,
-          "No hay respuestas correctas. Solo queremos saber qué piensas ahora.",
-          "There are no right answers. We just want to know what you think right now.",
-        )}
-      </p>
-      <div className="mt-5 space-y-5">
+    <div className="h-[calc(100vh-120px)] max-w-6xl mx-auto px-6 flex flex-col justify-center slide-up">
+      <div className="text-center mb-10">
+        <h2 className="text-2xl md:text-3xl font-bold text-[color:var(--teal)]">
+          {t(lang, "¿Qué tan de acuerdo estás con las siguientes ideas?", "How much do you agree with the following ideas?")}
+        </h2>
+        <p className="text-sm md:text-base text-[color:var(--muted)] mt-2">
+          {t(
+            lang,
+            "No hay respuestas correctas. Solo queremos saber qué piensas ahora.",
+            "There are no right answers. We just want to know what you think right now.",
+          )}
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
         {items.map((it, i) => (
-          <div key={i} className="fade-in" style={{ animationDelay: `${i * 200}ms` }}>
-            <p className="font-bold text-center mb-2">{t(lang, it.es, it.en)}</p>
-            <Slider6
-              value={values[i]}
-              onChange={setters[i]}
-              leftLabel={t(lang, "Muy de acuerdo", "Strongly agree")}
-              rightLabel={t(lang, "Muy en desacuerdo", "Strongly disagree")}
-            />
+          <div
+            key={i}
+            className="fade-in rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-sm p-6 lg:p-7 transition-all duration-300 hover:border-[color:var(--teal)]/40 hover:bg-white/[0.05]"
+            style={{ animationDelay: `${i * 150}ms` }}
+          >
+            <p className="font-semibold text-center text-base lg:text-lg leading-snug min-h-[5.5rem] flex items-center justify-center">
+              {t(lang, it.es, it.en)}
+            </p>
+            <div className="mt-6">
+              <Slider6
+                value={values[i]}
+                onChange={setters[i]}
+                leftLabel={t(lang, "Muy de acuerdo", "Strongly agree")}
+                rightLabel={t(lang, "Muy en desacuerdo", "Strongly disagree")}
+              />
+            </div>
           </div>
         ))}
       </div>
-      <div className="mt-6 flex justify-center">
+
+      <div className="mt-10 flex justify-center">
         <NextButton onClick={onNext} disabled={!allSet} pulse={!!allSet}>
           {t(lang, "Siguiente →", "Next →")}
         </NextButton>
@@ -159,3 +171,4 @@ export default function Stage1({
     </div>
   );
 }
+
