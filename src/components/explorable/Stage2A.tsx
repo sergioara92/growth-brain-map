@@ -4,8 +4,8 @@ import { t } from "./i18n";
 import { NextButton } from "./buttons";
 
 const GRID = 3;
-const SPACING = 100;
-const PAD = 50;
+const SPACING = 116;
+const PAD = 58;
 const SIZE = PAD * 2 + (GRID - 1) * SPACING;
 
 type Edge = { id: string; from: [number, number]; to: [number, number] };
@@ -114,7 +114,7 @@ export default function Stage2A({
 
   const cityLineProps = (lvl: number) => {
     switch (lvl) {
-      case 0: return { stroke: "#555577", strokeWidth: 2, strokeDasharray: "6 4" };
+      case 0: return { stroke: "#3D2F66", strokeWidth: 4 };
       case 1: return { stroke: "#8B6914", strokeWidth: 3, strokeDasharray: "8 4" };
       case 2: return { stroke: "#AAAAAA", strokeWidth: 3 };
       case 3: return { stroke: "#FFFFFF", strokeWidth: 4 };
@@ -127,10 +127,10 @@ export default function Stage2A({
     <div className="max-w-6xl mx-auto px-4 py-4 grid md:grid-cols-2 gap-8 fade-in">
       {/* TEXT */}
       <div>
-        <h2 className="font-bold text-[color:var(--teal)]" style={{ fontSize: 22 }}>
+        <h2 className="font-bold text-[color:var(--teal)] text-[22px] md:text-[26px]">
           {t(lang, "Tu cerebro funciona como una ciudad", "Your brain works like a city")}
         </h2>
-        <div className="mt-4 space-y-4" style={{ maxWidth: 380, fontSize: 16, lineHeight: 1.6 }}>
+        <div className="mt-4 space-y-4" style={{ maxWidth: 420, fontSize: 17, lineHeight: 1.6 }}>
           {t(
             lang,
             `Cada vez que aprendés algo nuevo, se construye una nueva calle entre dos lugares que antes no estaban conectados.|Al principio esa calle es un camino de tierra — lento y difícil. Pero cada vez que practicás, se pavimenta, se ensancha, y con el tiempo se convierte en una autopista.|Ahora reemplazá los barrios por neuronas y las calles por conexiones entre ellas — y tenés exactamente lo que pasa en tu cerebro cuando aprendés.`,
@@ -139,13 +139,13 @@ export default function Stage2A({
             .split("|")
             .map((p, i) => <p key={i}>{p}</p>)}
         </div>
-        <p className="mt-6 font-bold text-[color:var(--teal)]" aria-live="polite">{progressLabel}</p>
+        <p className="mt-6 font-bold text-[color:var(--teal)] text-[16px]" aria-live="polite">{progressLabel}</p>
 
-        {banner === "done" && (
-          <div className="mt-8 fade-in">
-            <NextButton onClick={onSubNext}>{t(lang, "Siguiente →", "Next →")}</NextButton>
-          </div>
-        )}
+        <div className="mt-8">
+          <NextButton onClick={onSubNext} disabled={level2plus < 4} pulse={level2plus === 4}>
+            {t(lang, "Siguiente →", "Next →")}
+          </NextButton>
+        </div>
       </div>
 
       {/* SIM */}
@@ -205,13 +205,13 @@ export default function Stage2A({
                   const act = nodeActive(r, c) >= 2;
                   const winOp = act ? 1 : 0.55;
                   return (
-                    <g key={`b-${r}-${c}`} transform={`translate(${p.x - 12} ${p.y - 14})`} filter={act ? "url(#bldgGlow)" : undefined}>
-                      <rect x={0} y={0} width={24} height={28} fill="#2A1A5E" stroke="#6655AA" strokeWidth={1} />
-                      <rect x={4} y={4} width={5} height={5} fill="#FFD166" opacity={winOp} />
-                      <rect x={15} y={4} width={5} height={5} fill="#FFD166" opacity={winOp} />
-                      <rect x={4} y={13} width={5} height={5} fill="#FFD166" opacity={winOp} />
-                      <rect x={15} y={13} width={5} height={5} fill="#FFD166" opacity={winOp} />
-                      <rect x={9} y={20} width={6} height={8} fill="#FFD166" opacity={winOp} />
+                    <g key={`b-${r}-${c}`} transform={`translate(${p.x - 15} ${p.y - 17})`} filter={act ? "url(#bldgGlow)" : undefined}>
+                      <rect x={0} y={0} width={30} height={34} fill="#2A1A5E" stroke="#6655AA" strokeWidth={1} />
+                      <rect x={5} y={5} width={6} height={6} fill="#FFD166" opacity={winOp} />
+                      <rect x={19} y={5} width={6} height={6} fill="#FFD166" opacity={winOp} />
+                      <rect x={5} y={16} width={6} height={6} fill="#FFD166" opacity={winOp} />
+                      <rect x={19} y={16} width={6} height={6} fill="#FFD166" opacity={winOp} />
+                      <rect x={11} y={24} width={8} height={10} fill="#FFD166" opacity={winOp} />
                     </g>
                   );
                 }),
@@ -321,28 +321,28 @@ export default function Stage2A({
                   <g key={`nr-${r}-${c}`} style={{ transform: `scale(${scale})`, transformOrigin: `${p.x}px ${p.y}px`, transition: "transform 300ms" }}>
                     {[0, 60, 120, 180, 240, 300].map((deg, i) => {
                       const a = (deg * Math.PI) / 180;
-                      const startX = p.x + Math.cos(a) * (16 + armOffset);
-                      const startY = p.y + Math.sin(a) * (16 + armOffset);
-                      const endX = p.x + Math.cos(a) * (16 + armOffset + 22);
-                      const endY = p.y + Math.sin(a) * (16 + armOffset + 22);
+                      const startX = p.x + Math.cos(a) * (18 + armOffset);
+                      const startY = p.y + Math.sin(a) * (18 + armOffset);
+                      const endX = p.x + Math.cos(a) * (18 + armOffset + 26);
+                      const endY = p.y + Math.sin(a) * (18 + armOffset + 26);
                       const fork1A = a - 0.45;
                       const fork2A = a + 0.45;
-                      const f1x = endX + Math.cos(fork1A) * 10;
-                      const f1y = endY + Math.sin(fork1A) * 10;
-                      const f2x = endX + Math.cos(fork2A) * 10;
-                      const f2y = endY + Math.sin(fork2A) * 10;
+                      const f1x = endX + Math.cos(fork1A) * 12;
+                      const f1y = endY + Math.sin(fork1A) * 12;
+                      const f2x = endX + Math.cos(fork2A) * 12;
+                      const f2y = endY + Math.sin(fork2A) * 12;
                       return (
                         <g key={i}>
-                          <line x1={startX} y1={startY} x2={endX} y2={endY} stroke={dendStroke} strokeWidth={1.2} style={{ transition: "stroke 300ms" }} />
-                          <line x1={endX} y1={endY} x2={f1x} y2={f1y} stroke={dendStroke} strokeWidth={1} />
-                          <line x1={endX} y1={endY} x2={f2x} y2={f2y} stroke={dendStroke} strokeWidth={1} />
+                          <line x1={startX} y1={startY} x2={endX} y2={endY} stroke={dendStroke} strokeWidth={1.4} style={{ transition: "stroke 300ms" }} />
+                          <line x1={endX} y1={endY} x2={f1x} y2={f1y} stroke={dendStroke} strokeWidth={1.1} />
+                          <line x1={endX} y1={endY} x2={f2x} y2={f2y} stroke={dendStroke} strokeWidth={1.1} />
                         </g>
                       );
                     })}
                     {/* axon */}
-                    <line x1={p.x} y1={p.y + 16} x2={p.x + 4} y2={p.y + 34} stroke={dendStroke} strokeWidth={2} />
-                    {lit && <circle cx={p.x} cy={p.y} r={22} fill="url(#neuronBodyGlow)" />}
-                    <circle cx={p.x} cy={p.y} r={16} fill="#1A0A3B" stroke="#00C2C7" strokeWidth={1.5} />
+                    <line x1={p.x} y1={p.y + 18} x2={p.x + 5} y2={p.y + 40} stroke={dendStroke} strokeWidth={2.2} />
+                    {lit && <circle cx={p.x} cy={p.y} r={26} fill="url(#neuronBodyGlow)" />}
+                    <circle cx={p.x} cy={p.y} r={18} fill="#1A0A3B" stroke="#00C2C7" strokeWidth={1.5} />
                   </g>
                 );
               }),
