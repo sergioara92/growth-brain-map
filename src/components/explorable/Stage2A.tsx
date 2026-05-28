@@ -124,24 +124,24 @@ export default function Stage2A({
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-4 grid md:grid-cols-2 gap-8 fade-in">
+    <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.6fr)] gap-10 items-center min-h-[calc(100vh-100px)] fade-in">
       {/* TEXT */}
       <div>
-        <h2 className="font-bold text-[color:var(--teal)] text-[22px] md:text-[26px]">
+        <h2 className="font-bold text-[color:var(--teal)] text-[28px] md:text-[32px] leading-tight">
           {t(lang, "Tu cerebro funciona como una ciudad", "Your brain works like a city")}
         </h2>
-        <div className="mt-4 space-y-4" style={{ maxWidth: 420, fontSize: 17, lineHeight: 1.6 }}>
+        <div className="mt-5 space-y-4" style={{ fontSize: 18, lineHeight: 1.65, maxWidth: 480 }}>
           {t(
             lang,
-            `Cada vez que aprendes algo nuevo, se construye una nueva calle entre dos lugares que antes no estaban conectados.|Al principio esa calle es un camino de tierra — lento y difícil. Pero cada vez que practicas, se pavimenta, se ensancha, y con el tiempo se convierte en una autopista.|Ahora reemplazá los barrios por neuronas y las calles por conexiones entre ellas — y tienes exactamente lo que pasa en tu cerebro cuando aprendes.`,
+            `Cada vez que aprendes algo nuevo, se construye una nueva calle entre dos lugares que antes no estaban conectados.|Al principio esa calle es un camino de tierra — lento y difícil. Pero cada vez que practicas, se pavimenta, se ensancha, y con el tiempo se convierte en una autopista.|Ahora reemplaza los barrios por neuronas y las calles por conexiones entre ellas — y tienes exactamente lo que pasa en tu cerebro cuando aprendes.`,
             `Every time you learn something new, a new street is built between two places that weren't connected before.|At first that street is a dirt road — slow and hard to travel. But every time you practice, it gets paved, widened, and over time becomes a highway.|Now replace the neighborhoods with neurons and the streets with connections between them — and you have exactly what happens in your brain when you learn.`,
           )
             .split("|")
             .map((p, i) => <p key={i}>{p}</p>)}
         </div>
-        <p className="mt-6 font-bold text-[color:var(--teal)] text-[16px]" aria-live="polite">{progressLabel}</p>
+        <p className="mt-5 font-bold text-[color:var(--teal)] text-[16px]" aria-live="polite">{progressLabel}</p>
 
-        <div className="mt-8">
+        <div className="mt-7">
           <NextButton onClick={onSubNext} disabled={level2plus < 4} pulse={level2plus === 4}>
             {t(lang, "Siguiente →", "Next →")}
           </NextButton>
@@ -149,7 +149,7 @@ export default function Stage2A({
       </div>
 
       {/* SIM */}
-      <div className="relative rounded-2xl p-4 transition-colors duration-500" style={{ backgroundColor: bg }}>
+      <div className="relative rounded-2xl p-5 transition-colors duration-500" style={{ backgroundColor: bg }}>
         {banner === "show" && (
           <div className="absolute top-0 left-0 right-0 z-10 bg-[color:var(--teal)] text-[color:var(--bg)] p-3 text-sm font-bold text-center slide-down rounded-t-2xl">
             {t(
@@ -160,195 +160,188 @@ export default function Stage2A({
           </div>
         )}
 
-        {/* CITY */}
-        <div className="flex flex-col items-center relative">
-          <div className="relative" style={{ width: SIZE, height: SIZE }}>
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 items-start">
+          {/* CITY */}
+          <div className="flex flex-col items-center">
+            <p className="text-[12px] uppercase tracking-[0.15em] text-[color:var(--teal)] mb-2">
+              {t(lang, "Ciudad", "City")}
+            </p>
+            <div className="relative" style={{ width: SIZE, height: SIZE }}>
+              <svg width={SIZE} height={SIZE} className="max-w-full">
+                <defs>
+                  <filter id="goldGlow" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="3" result="b" />
+                    <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+                  </filter>
+                  <filter id="bldgGlow" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="2.5" result="b" />
+                    <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+                  </filter>
+                </defs>
+                {edges.map((e) => {
+                  const lvl = connections[e.id] ?? 0;
+                  const p1 = pos(...e.from);
+                  const p2 = pos(...e.to);
+                  const lp = cityLineProps(lvl);
+                  return (
+                    <line key={e.id} x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} {...lp} style={{ transition: "all 300ms" }} />
+                  );
+                })}
+                {edges.map((e) => {
+                  const p1 = pos(...e.from);
+                  const p2 = pos(...e.to);
+                  return (
+                    <line
+                      key={`hit-${e.id}`}
+                      x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y}
+                      stroke="transparent" strokeWidth={20}
+                      style={{ cursor: "pointer" }}
+                      onClick={() => handleClick(e)}
+                    />
+                  );
+                })}
+                {Array.from({ length: GRID }).map((_, r) =>
+                  Array.from({ length: GRID }).map((_, c) => {
+                    const p = pos(r, c);
+                    const act = nodeActive(r, c) >= 2;
+                    const winOp = act ? 1 : 0.55;
+                    return (
+                      <g key={`b-${r}-${c}`} transform={`translate(${p.x - 15} ${p.y - 17})`} filter={act ? "url(#bldgGlow)" : undefined}>
+                        <rect x={0} y={0} width={30} height={34} fill="#2A1A5E" stroke="#6655AA" strokeWidth={1} />
+                        <rect x={5} y={5} width={6} height={6} fill="#FFD166" opacity={winOp} />
+                        <rect x={19} y={5} width={6} height={6} fill="#FFD166" opacity={winOp} />
+                        <rect x={5} y={16} width={6} height={6} fill="#FFD166" opacity={winOp} />
+                        <rect x={19} y={16} width={6} height={6} fill="#FFD166" opacity={winOp} />
+                        <rect x={11} y={24} width={8} height={10} fill="#FFD166" opacity={winOp} />
+                      </g>
+                    );
+                  }),
+                )}
+              </svg>
+
+              <div className="absolute inset-0 pointer-events-none">
+                {particles.map((p) => (
+                  <div
+                    key={p.id}
+                    style={{
+                      position: "absolute",
+                      left: p.x,
+                      top: p.y,
+                      width: p.kind === "dirt" ? 6 : 6,
+                      height: 6,
+                      marginLeft: -3,
+                      marginTop: -3,
+                      background: p.kind === "dirt" ? "#8B6914" : "#FFD166",
+                      borderRadius: p.kind === "dirt" ? "50%" : 0,
+                      transform: p.kind === "gold" ? "rotate(45deg)" : undefined,
+                      "--dx": `${p.dx}px`,
+                      "--dy": `${p.dy}px`,
+                      animation: `particleOut ${p.kind === "dirt" ? 400 : 600}ms ease-out forwards`,
+                    } as React.CSSProperties}
+                  />
+                ))}
+              </div>
+
+              {!hintDismissed && (
+                <div
+                  className="absolute pointer-events-none text-center"
+                  style={{
+                    left: (pos(0, 0).x + pos(0, 1).x) / 2 - 60,
+                    top: pos(0, 0).y - 50,
+                    width: 120,
+                    animation: "arrowPulse 1.5s ease-in-out infinite",
+                  }}
+                >
+                  <div className="text-2xl text-[color:var(--gold)]">↓</div>
+                  <div className="text-[11px] bg-[color:var(--gold)] text-[color:var(--bg)] px-2 py-1 rounded">
+                    {t(lang, "Haz clic en una calle para empezar a construir", "Click a street to start building")}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* NEURONS */}
+          <div className="flex flex-col items-center">
+            <p className="text-[12px] uppercase tracking-[0.15em] text-[color:var(--teal)] mb-2">
+              {t(lang, "Neuronas", "Neurons")}
+            </p>
             <svg width={SIZE} height={SIZE} className="max-w-full">
               <defs>
-                <filter id="goldGlow" x="-50%" y="-50%" width="200%" height="200%">
-                  <feGaussianBlur stdDeviation="3" result="b" />
-                  <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
-                </filter>
-                <filter id="bldgGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <filter id="teaLineGlow" x="-50%" y="-50%" width="200%" height="200%">
                   <feGaussianBlur stdDeviation="2.5" result="b" />
                   <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
                 </filter>
+                <radialGradient id="neuronBodyGlow">
+                  <stop offset="0%" stopColor="#00C2C7" stopOpacity="0.35" />
+                  <stop offset="100%" stopColor="#00C2C7" stopOpacity="0" />
+                </radialGradient>
               </defs>
-              {/* edges */}
+
               {edges.map((e) => {
                 const lvl = connections[e.id] ?? 0;
+                if (lvl === 0) return null;
                 const p1 = pos(...e.from);
                 const p2 = pos(...e.to);
-                const lp = cityLineProps(lvl);
+                const path = `M ${p1.x} ${p1.y} L ${p2.x} ${p2.y}`;
+                if (lvl === 1) return <line key={`nl-${e.id}`} x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} stroke="#554488" strokeWidth={1} opacity={0.25} strokeDasharray="4 3" />;
+                if (lvl === 2) return <line key={`nl-${e.id}`} x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} stroke="#00C2C7" strokeWidth={1.5} opacity={0.55} />;
+                if (lvl === 3) return <line key={`nl-${e.id}`} x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} stroke="#00C2C7" strokeWidth={2.5} style={{ animation: "slowPulse 2s ease-in-out infinite" }} />;
                 return (
-                  <line key={e.id} x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} {...lp} style={{ transition: "all 300ms" }} />
+                  <g key={`nl-${e.id}`}>
+                    <line x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} stroke="#00C2C7" strokeWidth={3} opacity={1} filter="url(#teaLineGlow)" />
+                    <circle r={4} fill="#FFD166">
+                      <animateMotion dur="1.2s" repeatCount="indefinite" path={path} />
+                    </circle>
+                  </g>
                 );
               })}
-              {/* hit areas */}
-              {edges.map((e) => {
-                const p1 = pos(...e.from);
-                const p2 = pos(...e.to);
-                return (
-                  <line
-                    key={`hit-${e.id}`}
-                    x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y}
-                    stroke="transparent" strokeWidth={20}
-                    style={{ cursor: "pointer" }}
-                    onClick={() => handleClick(e)}
-                  />
-                );
-              })}
-              {/* buildings */}
+
               {Array.from({ length: GRID }).map((_, r) =>
                 Array.from({ length: GRID }).map((_, c) => {
                   const p = pos(r, c);
-                  const act = nodeActive(r, c) >= 2;
-                  const winOp = act ? 1 : 0.55;
+                  const act = nodeActive(r, c);
+                  const lit = act >= 2;
+                  const expanded = act >= 3;
+                  const dendStroke = lit ? "#00C2C7" : "#6655AA";
+                  const scale = expanded ? 1.15 : 1;
+                  const armOffset = expanded ? 4 : 0;
                   return (
-                    <g key={`b-${r}-${c}`} transform={`translate(${p.x - 15} ${p.y - 17})`} filter={act ? "url(#bldgGlow)" : undefined}>
-                      <rect x={0} y={0} width={30} height={34} fill="#2A1A5E" stroke="#6655AA" strokeWidth={1} />
-                      <rect x={5} y={5} width={6} height={6} fill="#FFD166" opacity={winOp} />
-                      <rect x={19} y={5} width={6} height={6} fill="#FFD166" opacity={winOp} />
-                      <rect x={5} y={16} width={6} height={6} fill="#FFD166" opacity={winOp} />
-                      <rect x={19} y={16} width={6} height={6} fill="#FFD166" opacity={winOp} />
-                      <rect x={11} y={24} width={8} height={10} fill="#FFD166" opacity={winOp} />
+                    <g key={`nr-${r}-${c}`} style={{ transform: `scale(${scale})`, transformOrigin: `${p.x}px ${p.y}px`, transition: "transform 300ms" }}>
+                      {[0, 60, 120, 180, 240, 300].map((deg, i) => {
+                        const a = (deg * Math.PI) / 180;
+                        const startX = p.x + Math.cos(a) * (18 + armOffset);
+                        const startY = p.y + Math.sin(a) * (18 + armOffset);
+                        const endX = p.x + Math.cos(a) * (18 + armOffset + 26);
+                        const endY = p.y + Math.sin(a) * (18 + armOffset + 26);
+                        const fork1A = a - 0.45;
+                        const fork2A = a + 0.45;
+                        const f1x = endX + Math.cos(fork1A) * 12;
+                        const f1y = endY + Math.sin(fork1A) * 12;
+                        const f2x = endX + Math.cos(fork2A) * 12;
+                        const f2y = endY + Math.sin(fork2A) * 12;
+                        return (
+                          <g key={i}>
+                            <line x1={startX} y1={startY} x2={endX} y2={endY} stroke={dendStroke} strokeWidth={1.4} style={{ transition: "stroke 300ms" }} />
+                            <line x1={endX} y1={endY} x2={f1x} y2={f1y} stroke={dendStroke} strokeWidth={1.1} />
+                            <line x1={endX} y1={endY} x2={f2x} y2={f2y} stroke={dendStroke} strokeWidth={1.1} />
+                          </g>
+                        );
+                      })}
+                      <line x1={p.x} y1={p.y + 18} x2={p.x + 5} y2={p.y + 40} stroke={dendStroke} strokeWidth={2.2} />
+                      {lit && <circle cx={p.x} cy={p.y} r={26} fill="url(#neuronBodyGlow)" />}
+                      <circle cx={p.x} cy={p.y} r={18} fill="#1A0A3B" stroke="#00C2C7" strokeWidth={1.5} />
                     </g>
                   );
                 }),
               )}
             </svg>
-
-            {/* Particles overlay */}
-            <div className="absolute inset-0 pointer-events-none">
-              {particles.map((p) => (
-                <div
-                  key={p.id}
-                  style={{
-                    position: "absolute",
-                    left: p.x,
-                    top: p.y,
-                    width: p.kind === "dirt" ? 6 : 6,
-                    height: 6,
-                    marginLeft: -3,
-                    marginTop: -3,
-                    background: p.kind === "dirt" ? "#8B6914" : "#FFD166",
-                    borderRadius: p.kind === "dirt" ? "50%" : 0,
-                    transform: p.kind === "gold" ? "rotate(45deg)" : undefined,
-                    "--dx": `${p.dx}px`,
-                    "--dy": `${p.dy}px`,
-                    animation: `particleOut ${p.kind === "dirt" ? 400 : 600}ms ease-out forwards`,
-                  } as React.CSSProperties}
-                />
-              ))}
-            </div>
-
-            {/* Onboarding hint */}
-            {!hintDismissed && (
-              <div
-                className="absolute pointer-events-none text-center"
-                style={{
-                  left: (pos(0, 0).x + pos(0, 1).x) / 2 - 60,
-                  top: pos(0, 0).y - 50,
-                  width: 120,
-                  animation: "arrowPulse 1.5s ease-in-out infinite",
-                }}
-              >
-                <div className="text-2xl text-[color:var(--gold)]">↓</div>
-                <div className="text-[11px] bg-[color:var(--gold)] text-[color:var(--bg)] px-2 py-1 rounded">
-                  {t(lang, "Haz clic en una calle para empezar a construir", "Click a street to start building")}
-                </div>
-              </div>
-            )}
           </div>
-          <p className="mt-2 text-[13px] text-[color:var(--muted)]" aria-live="polite">
-            {t(lang, `Calles construidas: ${built} | Autopistas: ${highways}`, `Streets built: ${built} | Highways: ${highways}`)}
-          </p>
         </div>
 
-        {/* Divider */}
-        <div className="my-4 relative" style={{ height: 1 }}>
-          <div className="absolute left-[10%] right-[10%] top-1/2 bg-[color:var(--teal)]" style={{ height: 1 }} />
-          <span className="absolute left-1/2 -translate-x-1/2 -top-2 px-2 text-[12px] text-[color:var(--teal)]" style={{ backgroundColor: "#1A0A3B" }}>
-            {t(lang, "Lo mismo, visto de dos formas", "The same thing, seen two ways")}
-          </span>
-        </div>
-
-        {/* NEURONS */}
-        <div className="flex flex-col items-center">
-          <svg width={SIZE} height={SIZE} className="max-w-full">
-            <defs>
-              <filter id="teaLineGlow" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="2.5" result="b" />
-                <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
-              </filter>
-              <radialGradient id="neuronBodyGlow">
-                <stop offset="0%" stopColor="#00C2C7" stopOpacity="0.35" />
-                <stop offset="100%" stopColor="#00C2C7" stopOpacity="0" />
-              </radialGradient>
-            </defs>
-
-            {/* neuron edges */}
-            {edges.map((e) => {
-              const lvl = connections[e.id] ?? 0;
-              if (lvl === 0) return null;
-              const p1 = pos(...e.from);
-              const p2 = pos(...e.to);
-              const path = `M ${p1.x} ${p1.y} L ${p2.x} ${p2.y}`;
-              if (lvl === 1) return <line key={`nl-${e.id}`} x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} stroke="#554488" strokeWidth={1} opacity={0.25} strokeDasharray="4 3" />;
-              if (lvl === 2) return <line key={`nl-${e.id}`} x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} stroke="#00C2C7" strokeWidth={1.5} opacity={0.55} />;
-              if (lvl === 3) return <line key={`nl-${e.id}`} x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} stroke="#00C2C7" strokeWidth={2.5} style={{ animation: "slowPulse 2s ease-in-out infinite" }} />;
-              return (
-                <g key={`nl-${e.id}`}>
-                  <line x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} stroke="#00C2C7" strokeWidth={3} opacity={1} filter="url(#teaLineGlow)" />
-                  <circle r={4} fill="#FFD166">
-                    <animateMotion dur="1.2s" repeatCount="indefinite" path={path} />
-                  </circle>
-                </g>
-              );
-            })}
-
-            {/* neurons */}
-            {Array.from({ length: GRID }).map((_, r) =>
-              Array.from({ length: GRID }).map((_, c) => {
-                const p = pos(r, c);
-                const act = nodeActive(r, c);
-                const lit = act >= 2;
-                const expanded = act >= 3;
-                const dendStroke = lit ? "#00C2C7" : "#6655AA";
-                const scale = expanded ? 1.15 : 1;
-                const armOffset = expanded ? 4 : 0;
-                return (
-                  <g key={`nr-${r}-${c}`} style={{ transform: `scale(${scale})`, transformOrigin: `${p.x}px ${p.y}px`, transition: "transform 300ms" }}>
-                    {[0, 60, 120, 180, 240, 300].map((deg, i) => {
-                      const a = (deg * Math.PI) / 180;
-                      const startX = p.x + Math.cos(a) * (18 + armOffset);
-                      const startY = p.y + Math.sin(a) * (18 + armOffset);
-                      const endX = p.x + Math.cos(a) * (18 + armOffset + 26);
-                      const endY = p.y + Math.sin(a) * (18 + armOffset + 26);
-                      const fork1A = a - 0.45;
-                      const fork2A = a + 0.45;
-                      const f1x = endX + Math.cos(fork1A) * 12;
-                      const f1y = endY + Math.sin(fork1A) * 12;
-                      const f2x = endX + Math.cos(fork2A) * 12;
-                      const f2y = endY + Math.sin(fork2A) * 12;
-                      return (
-                        <g key={i}>
-                          <line x1={startX} y1={startY} x2={endX} y2={endY} stroke={dendStroke} strokeWidth={1.4} style={{ transition: "stroke 300ms" }} />
-                          <line x1={endX} y1={endY} x2={f1x} y2={f1y} stroke={dendStroke} strokeWidth={1.1} />
-                          <line x1={endX} y1={endY} x2={f2x} y2={f2y} stroke={dendStroke} strokeWidth={1.1} />
-                        </g>
-                      );
-                    })}
-                    {/* axon */}
-                    <line x1={p.x} y1={p.y + 18} x2={p.x + 5} y2={p.y + 40} stroke={dendStroke} strokeWidth={2.2} />
-                    {lit && <circle cx={p.x} cy={p.y} r={26} fill="url(#neuronBodyGlow)" />}
-                    <circle cx={p.x} cy={p.y} r={18} fill="#1A0A3B" stroke="#00C2C7" strokeWidth={1.5} />
-                  </g>
-                );
-              }),
-            )}
-          </svg>
-        </div>
+        <p className="mt-4 text-center text-[13px] text-[color:var(--muted)]" aria-live="polite">
+          {t(lang, `Calles construidas: ${built} | Autopistas: ${highways}`, `Streets built: ${built} | Highways: ${highways}`)}
+        </p>
       </div>
     </div>
   );
