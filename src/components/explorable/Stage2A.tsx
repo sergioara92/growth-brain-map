@@ -234,7 +234,6 @@ export default function Stage2A({
                     background: p.kind === "dirt" ? "#8B6914" : "#FFD166",
                     borderRadius: p.kind === "dirt" ? "50%" : 0,
                     transform: p.kind === "gold" ? "rotate(45deg)" : undefined,
-                    // @ts-expect-error css var
                     "--dx": `${p.dx}px`,
                     "--dy": `${p.dy}px`,
                     animation: `particleOut ${p.kind === "dirt" ? 400 : 600}ms ease-out forwards`,
