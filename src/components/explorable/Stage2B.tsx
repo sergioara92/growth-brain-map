@@ -1,52 +1,50 @@
 import type { Lang } from "./i18n";
 import { t } from "./i18n";
 import { NextButton } from "./buttons";
-import BrainScanner from "./BrainScanner";
+import neuronBio from "@/assets/neuron-bio.png";
 
 export default function Stage2B({ lang, onNext }: { lang: Lang; onNext: () => void }) {
   return (
-    <div className="mx-auto px-4 py-6 fade-in" style={{ maxWidth: 640 }}>
-      <h2 className="font-bold text-[color:var(--teal)] text-center text-[22px] md:text-[26px]">
+    <div className="mx-auto px-8 fade-in flex flex-col justify-center max-w-7xl" style={{ minHeight: "calc(100vh - 120px)" }}>
+      <h2 className="font-bold text-[color:var(--teal)] text-center text-[28px] md:text-[32px] mb-8">
         {t(lang, "Eso tiene un nombre: neuroplasticidad", "That has a name: neuroplasticity")}
       </h2>
-      <div className="mt-4 mx-auto space-y-4 text-center" style={{ maxWidth: 560, fontSize: 17, lineHeight: 1.6 }}>
-        {t(
-          lang,
-          `Las conexiones entre tus neuronas pueden volverse más fuertes con el tiempo. Cuando te esfuerzas por aprender algo nuevo, esas conexiones se fortalecen. Y entre más practicas, más fuertes se vuelven.|Con el tiempo, esas conexiones más fuertes te hacen más inteligente en esa materia.|Eso no es solo una metáfora — es biología. Los científicos lo llaman neuroplasticidad: la capacidad de tu cerebro de cambiar físicamente en respuesta al aprendizaje.|Y lo mejor es que ese proceso no tiene un límite fijo.`,
-          `The connections between your neurons can become stronger over time. When you work hard to learn something new, those connections strengthen. And the more you practice, the stronger they become.|Over time, those stronger connections make you more intelligent in that subject.|That's not just a metaphor — it's biology. Scientists call it neuroplasticity: your brain's ability to physically change in response to learning.|And the best part is that process has no fixed limit.`,
-        )
-          .split("|")
-          .map((p, i) => <p key={i}>{p}</p>)}
-      </div>
 
-      <div className="mt-8 flex items-center justify-center gap-4 flex-wrap">
-        <div className="fade-in" style={{ animationDelay: "0ms" }}>
-          <BrainScanner
-            zones={{ Z1: "dim", Z2: "resting", Z3: "resting", Z4: "dim" }}
-            label={t(lang, "Antes de practicar", "Before practicing")}
-            size="medium"
-          />
+      <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-10 items-center">
+        <div className="space-y-3" style={{ fontSize: 17, lineHeight: 1.6, maxWidth: 520 }}>
+          {t(
+            lang,
+            `Las conexiones entre tus neuronas pueden volverse más fuertes con el tiempo. Cuando te esfuerzas por aprender algo nuevo, esas conexiones se fortalecen. Y entre más practicas, más fuertes se vuelven.|Con el tiempo, esas conexiones más fuertes te hacen más inteligente en esa materia.|Eso no es solo una metáfora — es biología. Los científicos lo llaman neuroplasticidad: la capacidad de tu cerebro de cambiar físicamente en respuesta al aprendizaje.|Y lo mejor es que ese proceso no tiene un límite fijo.`,
+            `The connections between your neurons can become stronger over time. When you work hard to learn something new, those connections strengthen. And the more you practice, the stronger they become.|Over time, those stronger connections make you more intelligent in that subject.|That's not just a metaphor — it's biology. Scientists call it neuroplasticity: your brain's ability to physically change in response to learning.|And the best part is that process has no fixed limit.`,
+          )
+            .split("|")
+            .map((p, i) => <p key={i}>{p}</p>)}
         </div>
-        <div className="fade-in text-[color:var(--teal)]" style={{ animationDelay: "300ms", fontSize: 24 }}>→</div>
-        <div className="fade-in" style={{ animationDelay: "600ms" }}>
-          <BrainScanner
-            zones={{ Z1: "glowing", Z2: "glowing", Z3: "glowing", Z4: "glowing" }}
-            label={t(lang, "Después de practicar", "After practicing")}
-            size="medium"
+
+        <div className="relative flex items-center justify-center">
+          <div
+            aria-hidden
+            className="absolute inset-0"
+            style={{ background: "radial-gradient(circle, rgba(0,194,199,0.18), transparent 70%)" }}
+          />
+          <img
+            src={neuronBio}
+            alt={t(lang, "Ilustración de dos neuronas conectadas", "Illustration of two connected neurons")}
+            className="relative w-full max-w-[520px] mx-auto"
           />
         </div>
       </div>
 
       <div
-        className="mt-8 mx-auto text-center font-bold"
+        className="mt-6 mx-auto text-center font-bold"
         style={{
-          maxWidth: 480,
+          maxWidth: 720,
           borderRadius: 14,
           border: "1px solid #00C2C7",
           backgroundColor: "#0D2040",
-          padding: 24,
+          padding: 16,
           color: "#FFFFFF",
-          fontSize: 16,
+          fontSize: 15,
           lineHeight: 1.5,
         }}
       >
@@ -57,7 +55,7 @@ export default function Stage2B({ lang, onNext }: { lang: Lang; onNext: () => vo
         )}
       </div>
 
-      <div className="mt-8 flex justify-center">
+      <div className="mt-5 flex justify-center">
         <NextButton onClick={onNext}>{t(lang, "Siguiente →", "Next →")}</NextButton>
       </div>
     </div>
