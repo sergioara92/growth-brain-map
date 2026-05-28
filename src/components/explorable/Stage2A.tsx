@@ -93,7 +93,7 @@ export default function Stage2A({
   };
 
   const progressLabel = (() => {
-    if (built === 0) return t(lang, "Hacé clic en una calle para empezar.", "Click a street to get started.");
+    if (built === 0) return t(lang, "Haz clic en una calle para empezar.", "Click a street to get started.");
     if (built <= 2) return t(lang, "Estás construyendo caminos de tierra...", "You're building dirt roads...");
     if (built <= 5) return t(lang, "Las calles se están pavimentando 🧠", "The streets are getting paved 🧠");
     if (built <= 8) return t(lang, "¡Las conexiones se están fortaleciendo!", "The connections are getting stronger!");
@@ -114,11 +114,11 @@ export default function Stage2A({
 
   const cityLineProps = (lvl: number) => {
     switch (lvl) {
-      case 0: return { stroke: "#3D2F66", strokeWidth: 4 };
-      case 1: return { stroke: "#8B6914", strokeWidth: 3, strokeDasharray: "8 4" };
-      case 2: return { stroke: "#AAAAAA", strokeWidth: 3 };
-      case 3: return { stroke: "#FFFFFF", strokeWidth: 4 };
-      case 4: return { stroke: "#FFD166", strokeWidth: 5, filter: "url(#goldGlow)" };
+      case 0: return { stroke: "#4A3B7A", strokeWidth: 1.5 };
+      case 1: return { stroke: "#A0743A", strokeWidth: 4 };
+      case 2: return { stroke: "#BBBBBB", strokeWidth: 5 };
+      case 3: return { stroke: "#FFFFFF", strokeWidth: 6 };
+      case 4: return { stroke: "#FFD166", strokeWidth: 7, filter: "url(#goldGlow)" };
       default: return {};
     }
   };
@@ -133,7 +133,7 @@ export default function Stage2A({
         <div className="mt-4 space-y-4" style={{ maxWidth: 420, fontSize: 17, lineHeight: 1.6 }}>
           {t(
             lang,
-            `Cada vez que aprendés algo nuevo, se construye una nueva calle entre dos lugares que antes no estaban conectados.|Al principio esa calle es un camino de tierra — lento y difícil. Pero cada vez que practicás, se pavimenta, se ensancha, y con el tiempo se convierte en una autopista.|Ahora reemplazá los barrios por neuronas y las calles por conexiones entre ellas — y tenés exactamente lo que pasa en tu cerebro cuando aprendés.`,
+            `Cada vez que aprendes algo nuevo, se construye una nueva calle entre dos lugares que antes no estaban conectados.|Al principio esa calle es un camino de tierra — lento y difícil. Pero cada vez que practicas, se pavimenta, se ensancha, y con el tiempo se convierte en una autopista.|Ahora reemplazá los barrios por neuronas y las calles por conexiones entre ellas — y tienes exactamente lo que pasa en tu cerebro cuando aprendes.`,
             `Every time you learn something new, a new street is built between two places that weren't connected before.|At first that street is a dirt road — slow and hard to travel. But every time you practice, it gets paved, widened, and over time becomes a highway.|Now replace the neighborhoods with neurons and the streets with connections between them — and you have exactly what happens in your brain when you learn.`,
           )
             .split("|")
@@ -154,7 +154,7 @@ export default function Stage2A({
           <div className="absolute top-0 left-0 right-0 z-10 bg-[color:var(--teal)] text-[color:var(--bg)] p-3 text-sm font-bold text-center slide-down rounded-t-2xl">
             {t(
               lang,
-              "¡Tu cerebro acaba de cambiar! Cada vez que practicás algo difícil, esto es lo que pasa.",
+              "¡Tu cerebro acaba de cambiar! Cada vez que practicas algo difícil, esto es lo que pasa.",
               "Your brain just changed! Every time you practice something hard, this is what happens.",
             )}
           </div>
@@ -255,7 +255,7 @@ export default function Stage2A({
               >
                 <div className="text-2xl text-[color:var(--gold)]">↓</div>
                 <div className="text-[11px] bg-[color:var(--gold)] text-[color:var(--bg)] px-2 py-1 rounded">
-                  {t(lang, "Hacé clic en una calle para empezar a construir", "Click a street to start building")}
+                  {t(lang, "Haz clic en una calle para empezar a construir", "Click a street to start building")}
                 </div>
               </div>
             )}

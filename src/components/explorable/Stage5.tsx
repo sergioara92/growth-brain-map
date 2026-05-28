@@ -31,7 +31,7 @@ const CARDS: Card[] = [
 const COLS: { id: Col; bg: string; titleColor: string; icon: string; esTitle: string; enTitle: string; esDesc: string; enDesc: string }[] = [
   { id: "util", bg: "#0D2B2B", titleColor: "var(--teal)", icon: "🧠⚡", esTitle: "Útil para aprender", enTitle: "Helpful for learning", esDesc: "Cambiás lo que hacés. Tu cerebro construye nuevas conexiones.", enDesc: "You change what you do. Your brain builds new connections." },
   { id: "no-util", bg: "#2B0D0D", titleColor: "var(--coral)", icon: "🚫", esTitle: "No útil", enTitle: "Not helpful", esDesc: "Le atribuís el problema a algo fijo. Tu cerebro se bloquea.", enDesc: "You attribute the problem to something fixed. Your brain blocks." },
-  { id: "sin-estrategia", bg: "var(--effort-bg)", titleColor: "var(--gold)", icon: "🔄❓", esTitle: "Esfuerzo sin estrategia", enTitle: "Effort without strategy", esDesc: "Te esforzás, pero sin cambiar el método. Pocas conexiones nuevas.", enDesc: "You try hard, but without changing the method. Few new connections." },
+  { id: "sin-estrategia", bg: "var(--effort-bg)", titleColor: "var(--gold)", icon: "🔄❓", esTitle: "Esfuerzo sin estrategia", enTitle: "Effort without strategy", esDesc: "Te esfuerzas, pero sin cambiar el método. Pocas conexiones nuevas.", enDesc: "You try hard, but without changing the method. Few new connections." },
 ];
 
 function shuffle<T>(arr: T[]): T[] {

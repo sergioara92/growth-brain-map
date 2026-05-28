@@ -8,15 +8,15 @@ type Beliefs = { b1: number | null; b2: number | null; b3: number | null };
 
 const items = [
   {
-    es: "Siempre podés cambiar mucho qué tan inteligente sos.",
+    es: "Siempre puedes cambiar mucho qué tan inteligente sos.",
     en: "You can always greatly change how intelligent you are.",
   },
   {
-    es: "Sin importar quién seas, podés cambiar mucho tu inteligencia.",
+    es: "Sin importar quién seas, puedes cambiar mucho tu inteligencia.",
     en: "No matter who you are, you can change your intelligence a lot.",
   },
   {
-    es: "Sin importar cuánta inteligencia tengas, siempre podés cambiarla bastante.",
+    es: "Sin importar cuánta inteligencia tengas, siempre puedes cambiarla bastante.",
     en: "No matter how much intelligence you have, you can always change it quite a bit.",
   },
 ];
