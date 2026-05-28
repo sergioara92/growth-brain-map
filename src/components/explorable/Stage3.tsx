@@ -41,8 +41,8 @@ export default function Stage3({
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-6 fade-in">
-      <p className="text-center max-w-2xl mx-auto fade-in">
+    <div className="min-h-[calc(100vh-160px)] max-w-7xl mx-auto px-6 py-6 flex flex-col justify-center fade-in">
+      <p className="text-center max-w-2xl mx-auto fade-in text-base md:text-lg">
         {t(
           lang,
           "Ya sabés que tu cerebro puede cambiar. Pero ¿qué hace que eso ocurra? Empieza con una decisión.",
@@ -50,7 +50,7 @@ export default function Stage3({
         )}
       </p>
 
-      <div className="mt-8 grid md:grid-cols-2 gap-8">
+      <div className="mt-8 grid md:grid-cols-[1.1fr_1fr] gap-10 lg:gap-16 items-center">
         <div>
           <div className="rounded-xl border border-[color:var(--stage-upcoming)] p-6">
             <p>
