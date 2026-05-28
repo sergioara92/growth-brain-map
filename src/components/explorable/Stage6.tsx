@@ -54,7 +54,7 @@ export default function Stage6({
   }
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-8 fade-in">
+    <div className="max-w-2xl mx-auto px-4 py-4 fade-in">
       <h2 className="text-xl font-bold text-[color:var(--teal)] text-center">
         {t(lang, "¿Y vos? ¿Qué pensás ahora?", "And you? What do you think now?")}
       </h2>
@@ -65,7 +65,7 @@ export default function Stage6({
           "These are the same questions as before. Did anything shift in what you think?",
         )}
       </p>
-      <div className="mt-8 space-y-10">
+      <div className="mt-6 space-y-5">
         {items.map((it, i) => (
           <div key={i}>
             <p className="font-bold text-center mb-4">{t(lang, it.es, it.en)}</p>

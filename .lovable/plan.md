@@ -1,40 +1,37 @@
-# Redesign Stage 1 intro — neon neuron hero
+# Stage 1 redesign + no-scroll desktop pass
 
 ## Scope
-Only `src/components/explorable/Stage1.tsx`. No other files touched.
+- `src/components/explorable/Stage1.tsx` — replace neuron with brain image, switch to side-by-side layout, fit within viewport.
+- New asset: `src/assets/brain-hero.png` — generated neon brain similar to the reference (purple/teal/pink glowing brain on dark cosmic background, with synaptic light points).
+- Light no-scroll audit of `Stage2.tsx`, `Stage2A.tsx`, `Stage2B.tsx`, `Stage3.tsx`, `Stage4.tsx`, `Stage5.tsx`, `Stage6.tsx` — cap container height, reduce vertical paddings/margins where they currently push content below the fold on a 1454×887 desktop viewport.
 
-## Copy changes
-- Delete the line: `"Antes de seguir, queremos saber qué pensás vos."` / `"Before we continue, we want to know what you think."` (intro paragraph under the headline).
-- Fix remaining voseo on the slider screen: `pensás` → `piensas`.
+## Stage 1 intro layout
 
-## Visual overhaul (pre-slider intro view)
+```text
++--------------------------------------------------+
+|  ¿Crees que puedes...?           [   BRAIN   ]   |
+|  (headline, left, 55%)            (image, 45%)   |
+|                                                  |
+|  [ Decirte qué pienso → ]                        |
++--------------------------------------------------+
+```
 
-Replace the plain centered text with a hero composition built from inline SVG + CSS animations.
+- Container: `h-[calc(100vh-<header>)]` with `flex items-center`, `max-w-6xl mx-auto`, `grid grid-cols-1 md:grid-cols-[1.1fr_1fr] gap-12`.
+- Left column: headline (`text-3xl md:text-5xl`, white, soft teal glow) + ghost CTA below with `mt-8`. No paragraph subtext (already removed).
+- Right column: brain image, `max-h-[60vh] w-auto`, soft drop-shadow glow, gentle float animation (translateY 0→-6px over 6s).
+- Mobile (<md): stack — brain on top (smaller, `max-h-[40vh]`), headline below, CTA below.
+- Remove the SVG neuron block and its associated `<style>` keyframes for the neuron. Keep only the float + glow keyframes.
 
-### 1. Hero neuron mark (~340×340 SVG, centered)
-- Deep navy soma (layered concentric circles, radial gradient core).
-- Tri-color dendrites radiating outward: teal `#00C2C7`, coral `#FF6B6B`, magenta `#C77DFF`.
-- `feGaussianBlur` + `feMerge` glow filter applied to dendrite strokes.
-- Pulsing synaptic dots at dendrite tips using SMIL `<animate>` (opacity + r oscillating, 2–3s loop, staggered).
+## Brain asset
 
-### 2. Ambient background dots
-- ~24 small circles (1.5px, teal/coral, 25–40% opacity) scattered in a wider radius around the neuron.
-- Each blinks via CSS `@keyframes` (3–5s loop, random delays, staggered).
+Generate `src/assets/brain-hero.png` with `imagegen` (fast model, transparent background):
+- Prompt: "Glowing neon brain illustration with bright synaptic light points, electric blue, magenta and teal nerve pathways outlining the brain, cinematic glow, isolated on a solid white background, vector-style line art with light bloom, ultra-clean, no text" → transparent_background: true, 1024×1024.
 
-### 3. Question headline
-- 2.5rem (md: 3.25rem), weight 700, max-width 600px, white with soft teal `text-shadow` glow.
+## No-scroll audit (other stages)
 
-### 4. Ghost CTA button
-- Thin teal `#00C2C7` border, transparent fill.
-- Hover: soft outer glow + slight scale.
-
-### Motion timing (all respect `prefers-reduced-motion`)
-- Hero mark: fade + scale-in, 600ms.
-- Background dots: stagger-in over 1.2s.
-- Headline: fade-up 400ms after hero.
-- Button: fade-in 800ms after hero.
+For each stage component, replace `min-h-[80vh]` / `py-8` patterns that overflow on 887px-tall viewports with `h-[calc(100vh-96px)] flex flex-col justify-center overflow-hidden` containers, and tighten `space-y-10` → `space-y-6`, `mt-12` → `mt-6`. Only touch spacing values; do not restructure content.
 
 ## What does NOT change
-- Slider screen (only the voseo fix).
-- All other stages, BrainScanner, language toggle, progress bar.
-- Color tokens in `src/styles.css` (the new neon accents are inline SVG fills/strokes scoped to this hero only).
+- Slider screen content / behavior.
+- Copy strings (already cleaned).
+- Color tokens, language toggle, progress bar, BrainScanner.
