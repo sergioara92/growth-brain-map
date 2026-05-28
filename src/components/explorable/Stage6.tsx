@@ -6,9 +6,9 @@ import { NextButton } from "./buttons";
 import BrainScanner from "./BrainScanner";
 
 const items = [
-  { es: "Siempre podés cambiar mucho qué tan inteligente sos.", en: "You can always greatly change how intelligent you are." },
-  { es: "Sin importar quién seas, podés cambiar mucho tu inteligencia.", en: "No matter who you are, you can change your intelligence a lot." },
-  { es: "Sin importar cuánta inteligencia tengas, siempre podés cambiarla bastante.", en: "No matter how much intelligence you have, you can always change it quite a bit." },
+  { es: "Siempre puedes cambiar mucho qué tan inteligente sos.", en: "You can always greatly change how intelligent you are." },
+  { es: "Sin importar quién seas, puedes cambiar mucho tu inteligencia.", en: "No matter who you are, you can change your intelligence a lot." },
+  { es: "Sin importar cuánta inteligencia tengas, siempre puedes cambiarla bastante.", en: "No matter how much intelligence you have, you can always change it quite a bit." },
 ];
 
 export default function Stage6({
@@ -42,7 +42,7 @@ export default function Stage6({
         <p className="mt-4 max-w-lg">
           {t(
             lang,
-            "Lo que acabás de ver no es solo una metáfora. Es lo que pasa físicamente en tu cerebro cada vez que te esforzás por aprender algo difícil.",
+            "Lo que acabás de ver no es solo una metáfora. Es lo que pasa físicamente en tu cerebro cada vez que te esfuerzas por aprender algo difícil.",
             "What you just saw isn't just a metaphor. It's what physically happens in your brain every time you push yourself to learn something hard.",
           )}
         </p>

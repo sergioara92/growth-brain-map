@@ -12,7 +12,7 @@ export default function Stage2B({ lang, onNext }: { lang: Lang; onNext: () => vo
       <div className="mt-4 mx-auto space-y-4 text-center" style={{ maxWidth: 560, fontSize: 17, lineHeight: 1.6 }}>
         {t(
           lang,
-          `Las conexiones entre tus neuronas pueden volverse más fuertes con el tiempo. Cuando te esforzás por aprender algo nuevo, esas conexiones se fortalecen. Y entre más practicás, más fuertes se vuelven.|Con el tiempo, esas conexiones más fuertes te hacen más inteligente en esa materia.|Eso no es solo una metáfora — es biología. Los científicos lo llaman neuroplasticidad: la capacidad de tu cerebro de cambiar físicamente en respuesta al aprendizaje.|Y lo mejor es que ese proceso no tiene un límite fijo.`,
+          `Las conexiones entre tus neuronas pueden volverse más fuertes con el tiempo. Cuando te esfuerzas por aprender algo nuevo, esas conexiones se fortalecen. Y entre más practicas, más fuertes se vuelven.|Con el tiempo, esas conexiones más fuertes te hacen más inteligente en esa materia.|Eso no es solo una metáfora — es biología. Los científicos lo llaman neuroplasticidad: la capacidad de tu cerebro de cambiar físicamente en respuesta al aprendizaje.|Y lo mejor es que ese proceso no tiene un límite fijo.`,
           `The connections between your neurons can become stronger over time. When you work hard to learn something new, those connections strengthen. And the more you practice, the stronger they become.|Over time, those stronger connections make you more intelligent in that subject.|That's not just a metaphor — it's biology. Scientists call it neuroplasticity: your brain's ability to physically change in response to learning.|And the best part is that process has no fixed limit.`,
         )
           .split("|")
@@ -52,7 +52,7 @@ export default function Stage2B({ lang, onNext }: { lang: Lang; onNext: () => vo
       >
         {t(
           lang,
-          "Tu cerebro no es fijo. Cada vez que aprendés algo difícil, está cambiando físicamente. Eso es neuroplasticidad.",
+          "Tu cerebro no es fijo. Cada vez que aprendes algo difícil, está cambiando físicamente. Eso es neuroplasticidad.",
           "Your brain is not fixed. Every time you learn something hard, it is physically changing. That is neuroplasticity.",
         )}
       </div>
