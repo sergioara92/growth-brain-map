@@ -1,11 +1,40 @@
-## Execute
+# Redesign Stage 1 intro — neon neuron hero
 
-### 1. Stage2A road progression (monotonic, no dashing)
-`src/components/explorable/Stage2A.tsx` — replace `cityLineProps`:
-- L0 `#4A3B7A` w1.5 · L1 `#A0743A` w4 · L2 `#BBBBBB` w5 · L3 `#FFFFFF` w6 · L4 `#FFD166` w7 + goldGlow
+## Scope
+Only `src/components/explorable/Stage1.tsx`. No other files touched.
 
-### 2. Neutral Spanish sweep
-Replace voseo with tuteo in all ES strings across:
-- i18n.ts, Stage1.tsx, Stage2.tsx, Stage2A.tsx, Stage2B.tsx, Stage3.tsx, Stage4.tsx, Stage5.tsx, Stage6.tsx, ProgressBar.tsx
+## Copy changes
+- Delete the line: `"Antes de seguir, queremos saber qué pensás vos."` / `"Before we continue, we want to know what you think."` (intro paragraph under the headline).
+- Fix remaining voseo on the slider screen: `pensás` → `piensas`.
 
-Conversions: Hacé→Haz, Reemplazá→Reemplaza, Elegí→Elige, Mirá→Mira, Probá→Prueba, Pensá→Piensa, Buscá→Busca, Acordate→Recuerda, Tomate→Tómate; aprendés→aprendes, tenés→tienes, practicás→practicas, podés→puedes, querés→quieres, sos→eres, construís→construyes, pavimentás→pavimentas, ensanchás→ensanchas, esforzás→esfuerzas, andás→andas; vos→tú. English untouched.
+## Visual overhaul (pre-slider intro view)
+
+Replace the plain centered text with a hero composition built from inline SVG + CSS animations.
+
+### 1. Hero neuron mark (~340×340 SVG, centered)
+- Deep navy soma (layered concentric circles, radial gradient core).
+- Tri-color dendrites radiating outward: teal `#00C2C7`, coral `#FF6B6B`, magenta `#C77DFF`.
+- `feGaussianBlur` + `feMerge` glow filter applied to dendrite strokes.
+- Pulsing synaptic dots at dendrite tips using SMIL `<animate>` (opacity + r oscillating, 2–3s loop, staggered).
+
+### 2. Ambient background dots
+- ~24 small circles (1.5px, teal/coral, 25–40% opacity) scattered in a wider radius around the neuron.
+- Each blinks via CSS `@keyframes` (3–5s loop, random delays, staggered).
+
+### 3. Question headline
+- 2.5rem (md: 3.25rem), weight 700, max-width 600px, white with soft teal `text-shadow` glow.
+
+### 4. Ghost CTA button
+- Thin teal `#00C2C7` border, transparent fill.
+- Hover: soft outer glow + slight scale.
+
+### Motion timing (all respect `prefers-reduced-motion`)
+- Hero mark: fade + scale-in, 600ms.
+- Background dots: stagger-in over 1.2s.
+- Headline: fade-up 400ms after hero.
+- Button: fade-in 800ms after hero.
+
+## What does NOT change
+- Slider screen (only the voseo fix).
+- All other stages, BrainScanner, language toggle, progress bar.
+- Color tokens in `src/styles.css` (the new neon accents are inline SVG fills/strokes scoped to this hero only).
