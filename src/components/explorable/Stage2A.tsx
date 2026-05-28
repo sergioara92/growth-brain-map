@@ -205,13 +205,13 @@ export default function Stage2A({
                   const act = nodeActive(r, c) >= 2;
                   const winOp = act ? 1 : 0.55;
                   return (
-                    <g key={`b-${r}-${c}`} transform={`translate(${p.x - 12} ${p.y - 14})`} filter={act ? "url(#bldgGlow)" : undefined}>
-                      <rect x={0} y={0} width={24} height={28} fill="#2A1A5E" stroke="#6655AA" strokeWidth={1} />
-                      <rect x={4} y={4} width={5} height={5} fill="#FFD166" opacity={winOp} />
-                      <rect x={15} y={4} width={5} height={5} fill="#FFD166" opacity={winOp} />
-                      <rect x={4} y={13} width={5} height={5} fill="#FFD166" opacity={winOp} />
-                      <rect x={15} y={13} width={5} height={5} fill="#FFD166" opacity={winOp} />
-                      <rect x={9} y={20} width={6} height={8} fill="#FFD166" opacity={winOp} />
+                    <g key={`b-${r}-${c}`} transform={`translate(${p.x - 15} ${p.y - 17})`} filter={act ? "url(#bldgGlow)" : undefined}>
+                      <rect x={0} y={0} width={30} height={34} fill="#2A1A5E" stroke="#6655AA" strokeWidth={1} />
+                      <rect x={5} y={5} width={6} height={6} fill="#FFD166" opacity={winOp} />
+                      <rect x={19} y={5} width={6} height={6} fill="#FFD166" opacity={winOp} />
+                      <rect x={5} y={16} width={6} height={6} fill="#FFD166" opacity={winOp} />
+                      <rect x={19} y={16} width={6} height={6} fill="#FFD166" opacity={winOp} />
+                      <rect x={11} y={24} width={8} height={10} fill="#FFD166" opacity={winOp} />
                     </g>
                   );
                 }),
