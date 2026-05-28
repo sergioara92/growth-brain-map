@@ -1,24 +1,60 @@
 ## Goal
 
-Rework the "neuroplasticidad" screen (`src/components/explorable/Stage2B.tsx`) so it fits a desktop viewport without scrolling, drops the "Antes de practicar / Después de practicar" brain panels, and presents the idea like the reference: explanatory text on the left, a biological neuron illustration on the right.
+Make the brain on the first page (Stage1 hero) feel alive — overlay animated "supernova" lights that pulse and travel along neural pathways, evoking neurons firing inside the brain. The existing static `brain-hero.png` stays as the base; the animation sits on top.
 
-## Changes (only `Stage2B.tsx` + one new asset)
+## Approach
 
-1. **Generate neuron illustration** → `src/assets/neuron-bio.png` (transparent PNG). Two connected neurons with cell body, axon, myelin sheath segments, dendrites, and small teal signal nodes along the axon — styled to match the dark navy/teal palette (not the cartoony purple of the reference, but same anatomical layout).
+Build a new presentational component `BrainSupernova` (`src/components/explorable/BrainSupernova.tsx`) that renders the brain image plus an SVG overlay of animated light particles. No new dependencies — pure inline SVG + CSS keyframes (respects `prefers-reduced-motion`).
 
-2. **No-scroll desktop container**
-   - Replace `max-w-[640px]` centered column with `h-[calc(100vh-120px)] max-w-7xl mx-auto px-8 flex flex-col justify-center`.
-   - Headline centered at top: `text-[28px] md:text-[32px]`, `mb-8`.
+### What renders
 
-3. **Two-column body**: `grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-10 items-center`.
-   - **Left column**: the 4 paragraphs, left-aligned, `fontSize: 17, lineHeight: 1.6, maxWidth: 520`, `space-y-3`.
-   - **Right column**: `<img src={neuronBio} alt="..." className="w-full max-w-[520px] mx-auto" />` with a soft teal radial glow behind it (`bg-[radial-gradient(circle,rgba(0,194,199,0.15),transparent_70%)]`).
+```
+┌─ relative container (size of brain) ─┐
+│  <img brain-hero.png />              │  ← base layer
+│  <svg absolute inset-0>              │  ← overlay
+│    radial glow halos (3, slow drift) │
+│    ~14 supernova particles           │
+│    ~6 travelling pulses on paths     │
+│  </svg>                              │
+└──────────────────────────────────────┘
+```
 
-4. **Remove**: the entire `BrainScanner` before/after block (lines 22–38) and the `import BrainScanner`.
+### Supernova particle (×~14, scattered across brain area)
 
-5. **Keep but compact**: the teal-bordered key takeaway box — move it below the two-column grid, `mt-6`, `maxWidth: 720`, `padding: 16`, `fontSize: 15`. Next button `mt-5`.
+Each particle = 3 concentric SVG circles sharing one center:
+- Bright core (r 2 → 3, white/teal)
+- Mid halo (r 4 → 14, teal `#22d3ee` or magenta `#e879f9`, opacity 0.6 → 0)
+- Outer shockwave (r 8 → 28, same hue, opacity 0.3 → 0, stroke only)
 
-6. **Imports**: add `import neuronBio from "@/assets/neuron-bio.png";`. All copy strings unchanged.
+Animated via a single `@keyframes supernova` (3.5–6s, infinite) that scales radii and fades opacity, producing a "burst → fade" cycle. Each particle gets a random `animation-delay` (0–5s) and `animation-duration` (3.5–6s) so they fire asynchronously. Colors alternate teal / magenta / cyan-white to match the reference image's palette.
+
+Positions are hand-placed across the brain silhouette (cortex curves, frontal lobe, temporal lobe) — roughly 14 `{cx, cy, hue, delay, dur}` entries in a const array.
+
+### Travelling pulses (×~6)
+
+Short curved SVG `<path>` segments (invisible stroke) following neural-pathway-like curves between supernova points. A small bright dot (`<circle>`) animates along each path using SMIL `<animateMotion>` with `dur="2.5s"` to `4s`, `repeatCount="indefinite"`, staggered `begin`. This reads as a signal traveling neuron-to-neuron.
+
+### Ambient glow
+
+3 large soft radial gradients (`<radialGradient>` + `<circle>`) drift in opacity (`@keyframes drift-glow` 8–12s) behind the particles to give the brain a "breathing" inner light.
+
+### Stage1.tsx changes
+
+Replace lines 107–115 with `<BrainSupernova alt={...} />`. The wrapper keeps the existing `stage1-brain-wrap` entrance animation and the same `max-h-[42vh] md:max-h-[68vh]` sizing. The component internally wraps the `<img>` in `relative` and absolutely positions the overlay SVG with `viewBox="0 0 1024 1024"` so coordinates match the source image.
+
+## Accessibility
+
+- The image keeps its `alt`.
+- The SVG overlay has `aria-hidden="true"`.
+- A `@media (prefers-reduced-motion: reduce)` block disables the supernova + travel animations (particles still render statically as soft dots).
 
 ## What does NOT change
-Copy (Spanish/English), `NextButton`, `i18n` calls, other stages, design tokens.
+
+- Image asset (`brain-hero.png`) — reused as-is.
+- All copy, layout, headline, CTA, beliefs flow, other stages.
+- No new npm packages.
+
+## Files touched
+
+- **new**: `src/components/explorable/BrainSupernova.tsx`
+- **edit**: `src/components/explorable/Stage1.tsx` (swap the `<img>` for `<BrainSupernova />`, drop now-unused `brainHero` import)
