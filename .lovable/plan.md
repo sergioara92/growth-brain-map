@@ -1,37 +1,46 @@
-# Stage 1 redesign + no-scroll desktop pass
+# Stage 1 beliefs screen — desktop layout
 
 ## Scope
-- `src/components/explorable/Stage1.tsx` — replace neuron with brain image, switch to side-by-side layout, fit within viewport.
-- New asset: `src/assets/brain-hero.png` — generated neon brain similar to the reference (purple/teal/pink glowing brain on dark cosmic background, with synaptic light points).
-- Light no-scroll audit of `Stage2.tsx`, `Stage2A.tsx`, `Stage2B.tsx`, `Stage3.tsx`, `Stage4.tsx`, `Stage5.tsx`, `Stage6.tsx` — cap container height, reduce vertical paddings/margins where they currently push content below the fold on a 1454×887 desktop viewport.
+Only `src/components/explorable/Stage1.tsx`, the slider screen (the `revealed === true` branch). Intro screen is not touched.
 
-## Stage 1 intro layout
+## Problem
+The three belief statements stack vertically in a narrow `max-w-2xl` column. On a 1454×887 desktop everything bunches at the top and the bottom half is empty — wastes the horizontal space, and the three statements feel cramped together.
+
+## Layout
+
+Use a 3-column card layout that fills the desktop width and is vertically centered in the viewport.
 
 ```text
-+--------------------------------------------------+
-|  ¿Crees que puedes...?           [   BRAIN   ]   |
-|  (headline, left, 55%)            (image, 45%)   |
-|                                                  |
-|  [ Decirte qué pienso → ]                        |
-+--------------------------------------------------+
++------------------------------------------------------------+
+|   ¿Qué tan de acuerdo estás con las siguientes ideas?      |
+|   No hay respuestas correctas...                           |
+|                                                            |
+|   +----------+     +----------+     +----------+           |
+|   | Idea 1   |     | Idea 2   |     | Idea 3   |           |
+|   | slider   |     | slider   |     | slider   |           |
+|   +----------+     +----------+     +----------+           |
+|                                                            |
+|                    [ Siguiente → ]                         |
++------------------------------------------------------------+
 ```
 
-- Container: `h-[calc(100vh-<header>)]` with `flex items-center`, `max-w-6xl mx-auto`, `grid grid-cols-1 md:grid-cols-[1.1fr_1fr] gap-12`.
-- Left column: headline (`text-3xl md:text-5xl`, white, soft teal glow) + ghost CTA below with `mt-8`. No paragraph subtext (already removed).
-- Right column: brain image, `max-h-[60vh] w-auto`, soft drop-shadow glow, gentle float animation (translateY 0→-6px over 6s).
-- Mobile (<md): stack — brain on top (smaller, `max-h-[40vh]`), headline below, CTA below.
-- Remove the SVG neuron block and its associated `<style>` keyframes for the neuron. Keep only the float + glow keyframes.
+### Container
+- Wrap in `h-[calc(100vh-120px)] flex flex-col justify-center max-w-6xl mx-auto px-6`.
+- Header block (title + subtitle) centered, `mb-12`.
 
-## Brain asset
+### Cards (3-column grid)
+- `grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8`.
+- Each card: subtle panel — `rounded-2xl border border-white/8 bg-white/[0.03] p-6 backdrop-blur-sm`, with hover lift (`hover:border-[color:var(--teal)]/40 hover:bg-white/[0.05]`, `transition`).
+- Card content: statement text (centered, `text-base lg:text-lg font-semibold min-h-[5rem]` so cards align even with different text lengths) + slider below with `mt-6`.
+- Stagger the fade-in animation: 0ms / 150ms / 300ms.
 
-Generate `src/assets/brain-hero.png` with `imagegen` (fast model, transparent background):
-- Prompt: "Glowing neon brain illustration with bright synaptic light points, electric blue, magenta and teal nerve pathways outlining the brain, cinematic glow, isolated on a solid white background, vector-style line art with light bloom, ultra-clean, no text" → transparent_background: true, 1024×1024.
+### CTA
+- `mt-12 flex justify-center`, keeps existing `NextButton`.
 
-## No-scroll audit (other stages)
-
-For each stage component, replace `min-h-[80vh]` / `py-8` patterns that overflow on 887px-tall viewports with `h-[calc(100vh-96px)] flex flex-col justify-center overflow-hidden` containers, and tighten `space-y-10` → `space-y-6`, `mt-12` → `mt-6`. Only touch spacing values; do not restructure content.
+### Mobile (<md)
+- Stack to single column, keep cards.
 
 ## What does NOT change
-- Slider screen content / behavior.
-- Copy strings (already cleaned).
-- Color tokens, language toggle, progress bar, BrainScanner.
+- Slider component itself (`Slider6`), copy strings, `beliefs` state shape, `NextButton` behavior, `allSet` logic.
+- Intro screen (already redesigned).
+- Other stages.
