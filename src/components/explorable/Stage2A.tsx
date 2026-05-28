@@ -114,7 +114,7 @@ export default function Stage2A({
 
   const cityLineProps = (lvl: number) => {
     switch (lvl) {
-      case 0: return { stroke: "#555577", strokeWidth: 2, strokeDasharray: "6 4" };
+      case 0: return { stroke: "#3D2F66", strokeWidth: 4 };
       case 1: return { stroke: "#8B6914", strokeWidth: 3, strokeDasharray: "8 4" };
       case 2: return { stroke: "#AAAAAA", strokeWidth: 3 };
       case 3: return { stroke: "#FFFFFF", strokeWidth: 4 };
