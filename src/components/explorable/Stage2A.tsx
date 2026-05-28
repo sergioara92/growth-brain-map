@@ -127,10 +127,10 @@ export default function Stage2A({
     <div className="max-w-6xl mx-auto px-4 py-4 grid md:grid-cols-2 gap-8 fade-in">
       {/* TEXT */}
       <div>
-        <h2 className="font-bold text-[color:var(--teal)]" style={{ fontSize: 22 }}>
+        <h2 className="font-bold text-[color:var(--teal)] text-[22px] md:text-[26px]">
           {t(lang, "Tu cerebro funciona como una ciudad", "Your brain works like a city")}
         </h2>
-        <div className="mt-4 space-y-4" style={{ maxWidth: 380, fontSize: 16, lineHeight: 1.6 }}>
+        <div className="mt-4 space-y-4" style={{ maxWidth: 420, fontSize: 17, lineHeight: 1.6 }}>
           {t(
             lang,
             `Cada vez que aprendés algo nuevo, se construye una nueva calle entre dos lugares que antes no estaban conectados.|Al principio esa calle es un camino de tierra — lento y difícil. Pero cada vez que practicás, se pavimenta, se ensancha, y con el tiempo se convierte en una autopista.|Ahora reemplazá los barrios por neuronas y las calles por conexiones entre ellas — y tenés exactamente lo que pasa en tu cerebro cuando aprendés.`,
@@ -139,13 +139,13 @@ export default function Stage2A({
             .split("|")
             .map((p, i) => <p key={i}>{p}</p>)}
         </div>
-        <p className="mt-6 font-bold text-[color:var(--teal)]" aria-live="polite">{progressLabel}</p>
+        <p className="mt-6 font-bold text-[color:var(--teal)] text-[16px]" aria-live="polite">{progressLabel}</p>
 
-        {banner === "done" && (
-          <div className="mt-8 fade-in">
-            <NextButton onClick={onSubNext}>{t(lang, "Siguiente →", "Next →")}</NextButton>
-          </div>
-        )}
+        <div className="mt-8">
+          <NextButton onClick={onSubNext} disabled={level2plus < 4} pulse={level2plus === 4}>
+            {t(lang, "Siguiente →", "Next →")}
+          </NextButton>
+        </div>
       </div>
 
       {/* SIM */}
