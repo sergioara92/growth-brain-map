@@ -2,7 +2,7 @@ import { useState } from "react";
 import type { Lang } from "./i18n";
 import { t } from "./i18n";
 import Slider6 from "./Slider6";
-import { NextButton, GhostButton } from "./buttons";
+import { NextButton } from "./buttons";
 
 type Beliefs = { b1: number | null; b2: number | null; b3: number | null };
 
