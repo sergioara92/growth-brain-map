@@ -4,6 +4,7 @@ import LangToggle from "./LangToggle";
 import ProgressBar from "./ProgressBar";
 import Stage1 from "./Stage1";
 import Stage2 from "./Stage2";
+import Stage3Bridge from "./Stage3Bridge";
 import Stage3 from "./Stage3";
 import Stage4 from "./Stage4";
 import Stage5 from "./Stage5";
@@ -23,7 +24,7 @@ export default function Explorable() {
   const [verificarCount, setVerificarCount] = useState(0);
   const [finalBeliefs, setFinalBeliefs] = useState<{ b1: number | null; b2: number | null; b3: number | null }>({ b1: null, b2: null, b3: null });
 
-  const next = () => setStage((s) => Math.min(6, s + 1));
+  const next = () => setStage((s) => Math.min(7, s + 1));
 
   return (
     <main className="min-h-dvh pt-16 pb-12">
@@ -32,10 +33,11 @@ export default function Explorable() {
 
       {stage === 1 && <Stage1 lang={lang} beliefs={beliefs} setBeliefs={setBeliefs} onNext={next} />}
       {stage === 2 && <Stage2 lang={lang} connections={connections} setConnections={setConnections} onNext={next} />}
-      {stage === 3 && <Stage3 lang={lang} choice={challengeChoice} setChoice={setChallengeChoice} onNext={next} />}
-      {stage === 4 && <Stage4 lang={lang} challengeChoice={challengeChoice} attempts={attempts} setAttempts={setAttempts} onNext={next} />}
-      {stage === 5 && <Stage5 lang={lang} placements={placements} setPlacements={setPlacements} verificarCount={verificarCount} setVerificarCount={setVerificarCount} onNext={next} />}
-      {stage === 6 && <Stage6 lang={lang} originalBeliefs={beliefs} finalBeliefs={finalBeliefs} setFinalBeliefs={setFinalBeliefs} />}
+      {stage === 3 && <Stage3Bridge lang={lang} onNext={next} />}
+      {stage === 4 && <Stage3 lang={lang} choice={challengeChoice} setChoice={setChallengeChoice} onNext={next} />}
+      {stage === 5 && <Stage4 lang={lang} challengeChoice={challengeChoice} attempts={attempts} setAttempts={setAttempts} onNext={next} />}
+      {stage === 6 && <Stage5 lang={lang} placements={placements} setPlacements={setPlacements} verificarCount={verificarCount} setVerificarCount={setVerificarCount} onNext={next} />}
+      {stage === 7 && <Stage6 lang={lang} originalBeliefs={beliefs} finalBeliefs={finalBeliefs} setFinalBeliefs={setFinalBeliefs} />}
     </main>
   );
 }
