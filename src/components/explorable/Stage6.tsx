@@ -65,7 +65,7 @@ export default function Stage6({
           "These are the same questions as before. Did anything shift in what you think?",
         )}
       </p>
-      <div className="mt-8 space-y-10">
+      <div className="mt-6 space-y-5">
         {items.map((it, i) => (
           <div key={i}>
             <p className="font-bold text-center mb-4">{t(lang, it.es, it.en)}</p>
