@@ -6,10 +6,10 @@ import BrainScanner from "./BrainScanner";
 export default function Stage2B({ lang, onNext }: { lang: Lang; onNext: () => void }) {
   return (
     <div className="mx-auto px-4 py-6 fade-in" style={{ maxWidth: 640 }}>
-      <h2 className="font-bold text-[color:var(--teal)] text-center" style={{ fontSize: 22 }}>
+      <h2 className="font-bold text-[color:var(--teal)] text-center text-[22px] md:text-[26px]">
         {t(lang, "Eso tiene un nombre: neuroplasticidad", "That has a name: neuroplasticity")}
       </h2>
-      <div className="mt-4 mx-auto space-y-4 text-center" style={{ maxWidth: 560, fontSize: 16, lineHeight: 1.6 }}>
+      <div className="mt-4 mx-auto space-y-4 text-center" style={{ maxWidth: 560, fontSize: 17, lineHeight: 1.6 }}>
         {t(
           lang,
           `Las conexiones entre tus neuronas pueden volverse más fuertes con el tiempo. Cuando te esforzás por aprender algo nuevo, esas conexiones se fortalecen. Y entre más practicás, más fuertes se vuelven.|Con el tiempo, esas conexiones más fuertes te hacen más inteligente en esa materia.|Eso no es solo una metáfora — es biología. Los científicos lo llaman neuroplasticidad: la capacidad de tu cerebro de cambiar físicamente en respuesta al aprendizaje.|Y lo mejor es que ese proceso no tiene un límite fijo.`,
