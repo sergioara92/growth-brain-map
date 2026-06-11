@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import type { Lang } from "./i18n";
 import { t } from "./i18n";
-import BrainScanner from "./BrainScanner";
+
 import { NextButton } from "./buttons";
 
 type Col = "util" | "no-util" | "sin-estrategia";
