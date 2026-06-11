@@ -140,12 +140,53 @@ export default function Stage2A({
             .split("|")
             .map((p, i) => <p key={i}>{p}</p>)}
         </div>
-        <p className="mt-5 font-bold text-[color:var(--teal)] text-[16px]" aria-live="polite">{progressLabel}</p>
+        <div
+          className="mt-5 rounded-lg border border-[color:var(--teal)]/40 bg-[color:var(--teal)]/5 p-4 text-[15px] leading-relaxed"
+          style={{ maxWidth: 480 }}
+        >
+          <p className="font-bold text-[color:var(--teal)] mb-1">
+            {t(lang, "Cómo jugar", "How to play")}
+          </p>
+          <ul className="list-disc pl-5 space-y-1">
+            <li>
+              {t(
+                lang,
+                "Haz clic en la misma calle varias veces para pavimentarla: tierra → pavimento → ancha → autopista (4 clics).",
+                "Click the same street several times to pave it: dirt → paved → wide → highway (4 clicks).",
+              )}
+            </li>
+            <li>
+              {t(
+                lang,
+                `Construye al menos ${HIGHWAY_GOAL} autopistas para continuar.`,
+                `Build at least ${HIGHWAY_GOAL} highways to continue.`,
+              )}
+            </li>
+          </ul>
+        </div>
 
-        <div className="mt-7">
-          <NextButton onClick={onSubNext} disabled={level2plus < 4} pulse={level2plus === 4}>
+        <p className="mt-4 font-bold text-[color:var(--teal)] text-[16px]" aria-live="polite">{progressLabel}</p>
+        <p className="mt-1 text-[14px] text-[color:var(--muted)]" aria-live="polite">
+          {t(
+            lang,
+            `Autopistas: ${highways} / ${HIGHWAY_GOAL}`,
+            `Highways: ${highways} / ${HIGHWAY_GOAL}`,
+          )}
+        </p>
+
+        <div className="mt-6">
+          <NextButton onClick={onSubNext} disabled={highways < HIGHWAY_GOAL} pulse={highways === HIGHWAY_GOAL}>
             {t(lang, "Siguiente →", "Next →")}
           </NextButton>
+          {highways < HIGHWAY_GOAL && (
+            <p className="mt-2 text-[13px] text-[color:var(--muted)]">
+              {t(
+                lang,
+                `Necesitás ${HIGHWAY_GOAL} autopistas para continuar.`,
+                `You need ${HIGHWAY_GOAL} highways to continue.`,
+              )}
+            </p>
+          )}
         </div>
       </div>
 
