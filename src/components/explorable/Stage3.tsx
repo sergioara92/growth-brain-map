@@ -141,7 +141,7 @@ export default function Stage3({
   onNext: () => void;
 }) {
   return (
-    <div className="h-[calc(100vh-140px)] max-w-5xl mx-auto px-4 py-3 fade-in">
+    <div className="h-[calc(100dvh-60px)] max-w-5xl mx-auto px-4 py-3 fade-in">
       <div className="h-full rounded-2xl border border-[color:var(--teal)]/25 bg-[color:var(--teal)]/5 p-5 flex flex-col">
         <h2 className="font-bold text-[color:var(--teal)] text-[22px] md:text-[24px] leading-tight">
           {t(lang, "Tu turno: elegí un desafío", "Your turn: pick a challenge")}
