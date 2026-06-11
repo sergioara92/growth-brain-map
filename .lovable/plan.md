@@ -1,55 +1,42 @@
-Add a new bridge stage between current Stage 2 ("How the brain works") and current Stage 3 ("The challenge") that asks the big question and frames the three behaviors the rest of the explorable already teaches.
+## Goal
 
-### What the new stage shows
+Replace the current pill-style `ProgressBar` at the top of the explorable with a horizontal **chain of neurons** — one neuron per stage (7 total), each containing its number and title, connected to the next via glowing axon-like lines with traveling synapse pulses. Visual reference: the uploaded neuron image (deep navy background, electric-blue soma with bright cyan synapse dots, branching dendrites/axons).
 
-Headline (ES/EN):
-- ES: "Ahora que sabés que tu cerebro puede cambiar… ¿cómo lo hacés cambiar?"
-- EN: "Now that you know your brain can change… how do you make it change?"
+## What changes
 
-Subtitle:
-- ES: "Tres comportamientos activan ese cambio. Vamos a ver cada uno."
-- EN: "Three behaviors activate that change. We'll explore each one."
+**Single file rewrite:** `src/components/explorable/ProgressBar.tsx`
 
-Three cards, revealed with a small stagger animation. Each one previews a later stage so the structure of the journey is explicit:
+Everything else stays the same — `Explorable.tsx` keeps calling `<ProgressBar stage={s} lang={lang} />`, `stageLabels` is unchanged, the existing color tokens (`--teal`, `--bg`, `--gold`) are reused so it blends with the rest of the explorable.
 
-1. **Buscar desafíos** / **Seeking challenges**
-   - ES: "Elegir tareas difíciles que estiran tu cerebro, en vez de las fáciles."
-   - EN: "Picking hard tasks that stretch your brain, instead of easy ones."
-   - Icon: 🧗  → maps to current Stage 3 (The challenge)
+## Design
 
-2. **Replantear el error** / **Reframing mistakes**
-   - ES: "Tratar los errores como información, no como fracaso."
-   - EN: "Treating mistakes as information, not as failure."
-   - Icon: 🔁  → maps to current Stage 4 (The mistake)
+```text
+ ╭───╮        ╭───╮        ╭───╮              ╭───╮
+( 1 )═══●═══( 2 )═══●═══( 3 )═══ … ═══( 7 )
+ ╰───╯        ╰───╯        ╰───╯              ╰───╯
+  ¿Qué      Así funciona  ¿Cómo                ¿Y ahora?
+  creo?     el cerebro    cambiar?
+```
 
-3. **A qué le atribuís el fracaso** / **How you explain failure**
-   - ES: "Cuando algo no sale, ¿culpás algo fijo o cambiás de estrategia?"
-   - EN: "When something doesn't work, do you blame something fixed or change your strategy?"
-   - Icon: 🧭  → maps to current Stage 5 (The reactions)
+- **Neuron soma**: SVG `<circle>` with a radial gradient (deep `#1A0A3B` core → electric blue `#3B5BFF` rim), rimmed with bright cyan synapse dots (small filled circles around the perimeter). Number rendered as `<text>` centered inside (bold, white).
+- **Dendrites**: 3–4 short irregular `<path>` strokes emerging from each soma at angles that don't intersect the connector — purely decorative, gives the "neuron" silhouette from the reference image.
+- **Axon connectors**: a single curved `<path>` between consecutive somas, stroked in teal with a soft glow (`filter: drop-shadow`). For completed stages, the connector is solid bright teal; upcoming, it's dim `--stage-upcoming` dashed.
+- **Synapse pulse**: a small cyan circle animated along the active connector (CSS `@keyframes` translating `cx` or using `<animateMotion>`) to signal "current signal traveling here."
+- **Title labels**: rendered as `<text>` below each soma (hidden on small screens, like today), color follows active/done/upcoming state (teal / white / muted).
 
-A short bridge line under the cards: "Empecemos por la primera." / "Let's start with the first one." plus the standard Next button (enabled immediately, since this is informational).
+### States (mapped from existing logic)
+- `idx < stage` → **done**: soma filled bright blue, number white, label white, outgoing connector solid teal.
+- `idx === stage` → **active**: soma glows (larger drop-shadow, animated synapse dots), label teal, pulse animates along *incoming* connector.
+- `idx > stage` → **upcoming**: soma dim outline only, number/label muted, connector dashed.
 
-### Visual treatment
+### Layout & responsiveness
+- Single full-width SVG with `viewBox="0 0 1200 140"` + `preserveAspectRatio="xMidYMid meet"` so it scales cleanly on desktop and mobile.
+- Container keeps the existing `fixed top-0` + backdrop-blur shell so page offset doesn't shift.
+- On `< md` screens, hide the title `<text>` elements (keep numbers + neurons) so 7 nodes still fit.
+- `prefers-reduced-motion`: disable the synapse-pulse animation.
 
-- Reuse existing card styling from Stage 1 beliefs cards: rounded-2xl, border `border-white/10`, `bg-white/[0.03]`, hover lifts the border to teal.
-- Layout: centered column heading, then a responsive grid (1 col mobile, 3 cols md+) sized to fit within the desktop viewport (max-w-6xl, vertically centered like Stage 3).
-- Animations: existing `fade-in` and `slide-up` classes, with per-card `animationDelay` for the stagger.
+## Out of scope
 
-### Wiring
-
-- New file: `src/components/explorable/Stage3Bridge.tsx` (presentational, takes `lang` and `onNext`).
-- `Explorable.tsx`: insert the new stage between current 2 and 3, shifting later stages by +1. Total becomes 7. Update the `setStage` clamp from 6 to 7.
-- `i18n.ts` `stageLabels`: insert `{ es: "¿Cómo cambiar?", en: "How to change?" }` between index 1 and 2.
-- `ProgressBar.tsx`: no code change needed (it maps over `stageLabels`).
-
-### What does NOT change
-
-- Existing Stage 1, 2A/2B, current Stage 3 (challenge), 4 (mistake), 5 (reactions), 6 (now what?) content and behavior.
-- Design tokens, animations system, language toggle.
-- No new dependencies.
-
-### Files touched
-
-- new: `src/components/explorable/Stage3Bridge.tsx`
-- edit: `src/components/explorable/Explorable.tsx`
-- edit: `src/components/explorable/i18n.ts`
+- No changes to stage content, navigation logic, `Explorable.tsx`, or `i18n.ts`.
+- The uploaded reference image is used only as visual inspiration — not embedded as an `<img>` or background.
+- No new dependencies; pure inline SVG + CSS.
