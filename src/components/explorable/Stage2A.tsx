@@ -305,15 +305,15 @@ export default function Stage2A({
                 <div
                   className="absolute pointer-events-none text-center"
                   style={{
-                    left: (pos(0, 0).x + pos(0, 1).x) / 2 - 60,
+                    left: (pos(0, 0).x + pos(0, 1).x) / 2 - 90,
                     top: pos(0, 0).y - 50,
-                    width: 120,
+                    width: 180,
                     animation: "arrowPulse 1.5s ease-in-out infinite",
                   }}
                 >
                   <div className="text-2xl text-[color:var(--gold)]">↓</div>
                   <div className="text-[11px] bg-[color:var(--gold)] text-[color:var(--bg)] px-2 py-1 rounded">
-                    {t(lang, "Haz clic en una calle para empezar a construir", "Click a street to start building")}
+                    {t(lang, "Haz clic varias veces en la misma calle para pavimentarla", "Click the same street several times to pave it")}
                   </div>
                 </div>
               )}
