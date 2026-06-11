@@ -1,55 +1,63 @@
-# Stage 4 (Mistake section) redesign
+## Goal
+Both Stage 2A ("Así funciona el cerebro / Tu cerebro funciona como una ciudad") and Stage 3 ("Tu turno: elegí un desafío") should fit on screen without scrolling, and Stage 3's pieces (title → instructions → choices → brain → Next) should feel like a single, guided flow instead of disconnected blocks floating in the viewport.
 
-Rewrites `src/components/explorable/Stage4.tsx` only. No changes to other stages, `BrainScanner`, `Explorable` wiring, or i18n infrastructure beyond adding new strings via inline `t(lang, ...)` calls.
+## Scope
+Two files, presentation-only:
+- `src/components/explorable/Stage2A.tsx`
+- `src/components/explorable/Stage3.tsx`
 
-## Layout (no-scroll, centered)
+No business logic, no new components, no changes to `Explorable`, `Stage4`, or any other stage.
 
-Mirror Stage 3's pattern:
-- Outer: `h-[calc(100vh-160px)] max-w-6xl mx-auto px-4 py-3 grid md:grid-cols-2 gap-6 items-center`
-- Condense the intro copy ("You're going to make mistakes." block) into a single compact header above the grid so the two columns fit on one screen at 892×575.
+---
 
-## Left column — interactive problem
+## Stage 2A — make it fit on one screen
 
-- Problem statement: `x² + 5x + 6 = 0` (kept).
-- **Answer input**: large, very visible `<input type="text">` (placeholder "x = ?"), teal border, big font. Accepts `-2`, `-3`, `x=-2`, `-2,-3`, etc. Correct if the parsed value(s) include `-2` or `-3`.
-- **Verify button** right next to / under the input ("Check answer" / "Verificar"), coral background, equally prominent.
-- **Countdown timer**: prominent badge (large mono digits, teal) showing `5…0`. Starts at 5s when stage mounts and after every attempt. When it reaches 0 without a click, it auto-counts as a missed attempt (same as a wrong answer) and resets to 5.
-- Each click of Verify (or timer expiry):
-  - increments `attempts`
-  - resets the timer to 5
-  - clears the input
-  - shows the same per-attempt message currently in `attemptLabel` (1st…5th attempt strings preserved)
-  - shows the same ✗ / ◑ / ✓ icon row
-  - shows the "Each attempt releases neurotransmitters…" italic line from attempt ≥ 2
-- If the answer is correct, mark success (still counts as an attempt, switches the badge to ✓ and stops the timer).
+The text column is what overflows. Trim sizing only; keep all copy and the city/neurons simulation untouched.
 
-## Right column — nested triple brain
+- Container: switch from `min-h-[calc(100vh-100px)]` (which can exceed the viewport) to `h-[calc(100vh-140px)] overflow-hidden`, keep the 2-column grid.
+- Heading: `text-[22px] md:text-[26px]` (was 28/32), tighter `leading-tight`.
+- Body paragraphs: drop from `fontSize: 18 / lineHeight: 1.65` to `fontSize: 14.5 / lineHeight: 1.5`, reduce `space-y-4` → `space-y-2`, top margin `mt-5` → `mt-3`.
+- "Cómo jugar" card: `p-4 text-[15px]` → `p-3 text-[13px]`, `mt-5` → `mt-3`, list `space-y-1` kept.
+- Progress label + highways counter: `text-[16px]` → `text-[14px]`, `text-[14px]` → `text-[12px]`, `mt-4` → `mt-2`.
+- Next button block: `mt-6` → `mt-3`.
+- Right column padding `p-5` → `p-3` and reduce the inner gap (`gap-6` → `gap-4`) so the SVGs don't push height past the viewport at common laptop sizes.
 
-New inline `TripleNestedBrain` SVG component (same approach as Stage 3's `NestedBrain`), centered in the column:
-- **Large** outer brain silhouette: ~12 nodes / 16 links
-- **Medium** brain inscribed inside it: ~7 nodes / 9 links
-- **Small** brain inscribed inside the medium: ~4 nodes / 3 links
-- Default: all three drawn as dim outlines (teal stroke, low opacity), no glow.
-- Lighting rule (cumulative, teal `#00C2C7` + `pulseGlow` + drop-shadow):
-  - `attempts ≥ 1` → small brain lights up
-  - `attempts ≥ 3` → medium brain lights up (small stays lit)
-  - `attempts ≥ 5` → large brain lights up (all three lit, strongest glow on large)
-- Caption under the SVG: short dynamic label, e.g. "Connections built: N" (kept from current).
+No copy changes, no SVG/logic changes.
 
-## Next button + banner
+---
 
-- Keep the success banner ("This is what real learning feels like…") at `attempts ≥ 5`, repositioned so it doesn't push layout (absolute overlay on the right column).
-- Keep `NextButton` appearing at `attempts ≥ 3`, placed in the left column under the messages so it stays in-viewport.
+## Stage 3 — unify the desafío section
 
-## Strings (added via `t(lang, es, en)`)
+The current layout (per the screenshot) has the title floating at top center, instructions/choices crammed top-left, the brain isolated far right, and the Next button stranded in the page corner. Fix by collapsing it into a single visually connected card with clear vertical rhythm, while keeping the existing two-column structure.
 
-- "Tu respuesta" / "Your answer"
-- "Verificar" / "Check"
-- "Tiempo" / "Time"
-- "Se acabó el tiempo — cuenta como intento" / "Time's up — counts as an attempt"
+### Layout
 
-## Out of scope
+- Wrap the whole stage in one bordered card: `rounded-2xl border border-[color:var(--teal)]/25 bg-[color:var(--teal)]/5 p-5`, centered with `max-w-5xl mx-auto`, `h-[calc(100vh-140px)] flex flex-col`.
+- Title moves inside the card, smaller and left-aligned to match the rest: `text-[22px] md:text-[24px]`, no longer centered.
+- Two-column grid stays (`md:grid-cols-2 gap-6 flex-1 min-h-0`), but both columns share the same card background so they read as one unit instead of two islands.
 
-- No business-logic changes to `Explorable` (still uses `attempts` / `setAttempts` / `onNext` props).
-- No changes to `BrainScanner` — Stage 4 stops using it and renders its own nested SVG, like Stage 3 does.
-- No new files; everything lives in `Stage4.tsx`.
+### Left column (instructions + choices)
+
+- Keep all current copy (intro, "Qué hacer" callout, "Tu profe te da dos opciones…", easy/hard buttons, post-choice reflection line).
+- Tighten spacing: gaps of `mt-2` between blocks, buttons stack with `gap-2`.
+- The reflection line ("Elegiste el desafío…" / "Tiene sentido elegir lo fácil…") stays directly under the buttons.
+- The Next button lives at the bottom of this column via `mt-auto`, so it sits inside the card next to the brain — not at the far bottom-left of the page.
+
+### Right column (brain)
+
+- Wrap `NestedBrain` in a centered container with `flex-1 min-h-0 flex flex-col items-center justify-center`.
+- Add a thin divider (`md:border-l md:border-[color:var(--teal)]/20 md:pl-6`) between the columns so the eye reads left → right within one card.
+- Keep the existing `NestedBrain` component, the small/large brain SVGs, the lighting behavior on choice, and the caption underneath. Caption font drops to `text-[13px]` so the right column never grows taller than the left.
+
+### Result
+
+- One framed card holds the title, instructions, choices, the brain, and the Next button.
+- No vertical scroll on a standard laptop viewport.
+- Visual flow is: read title → read "Qué hacer" → pick option → see brain change → press Next, all inside one bounded surface.
+
+---
+
+## Technical notes
+- Pure Tailwind / inline-style changes. No new dependencies, no new files.
+- `NestedBrain` internals (paths, nodes, links, animations) are not modified.
+- Translations (`t(lang, …)`) and the `choice` state machine are untouched.
