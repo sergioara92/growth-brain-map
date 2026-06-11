@@ -141,144 +141,146 @@ export default function Stage3({
   onNext: () => void;
 }) {
   return (
-    <div className="h-[calc(100vh-160px)] max-w-6xl mx-auto px-4 py-3 flex flex-col fade-in">
-      <h2 className="font-bold text-[color:var(--teal)] text-[22px] md:text-[26px] leading-tight text-center">
-        {t(lang, "Tu turno: elegí un desafío", "Your turn: pick a challenge")}
-      </h2>
+    <div className="h-[calc(100vh-140px)] max-w-5xl mx-auto px-4 py-3 fade-in">
+      <div className="h-full rounded-2xl border border-[color:var(--teal)]/25 bg-[color:var(--teal)]/5 p-5 flex flex-col">
+        <h2 className="font-bold text-[color:var(--teal)] text-[22px] md:text-[24px] leading-tight">
+          {t(lang, "Tu turno: elegí un desafío", "Your turn: pick a challenge")}
+        </h2>
 
-      <div className="mt-3 grid md:grid-cols-2 gap-5 flex-1 min-h-0">
-        {/* LEFT: instructions + choices */}
-        <div className="flex flex-col min-h-0 overflow-hidden">
-          <p className="text-sm md:text-base">
-            {t(
-              lang,
-              "Ya sabés que tu cerebro puede cambiar. ¿Qué hace que eso ocurra? Empieza con una decisión.",
-              "You already know your brain can change. What makes it happen? It starts with a choice.",
-            )}
-          </p>
-
-          <div className="mt-2 rounded-lg border border-[color:var(--teal)]/40 bg-[color:var(--teal)]/5 p-2.5 text-[13px] leading-snug">
-            <span className="font-bold text-[color:var(--teal)]">
-              {t(lang, "Qué hacer: ", "What to do: ")}
-            </span>
-            {t(
-              lang,
-              "Elegí la opción que realmente harías y mirá qué le pasa a tu cerebro.",
-              "Pick the option you'd actually do and watch what happens to your brain.",
-            )}
-          </div>
-
-          <p className="mt-2 text-[13px] text-[color:var(--muted)]">
-            {t(
-              lang,
-              "Tu profe te da dos opciones de tarea:",
-              "Your teacher gives you two homework options:",
-            )}
-          </p>
-
-          <div className="mt-2 flex flex-col gap-2">
-            {(["easy", "hard"] as const).map((k) => {
-              const isHard = k === "hard";
-              const sel = choice === k;
-              return (
-                <button
-                  key={k}
-                  type="button"
-                  onClick={() => setChoice(k)}
-                  className="relative rounded-xl p-3 text-left transition-all"
-                  style={{
-                    backgroundColor: isHard ? "#0D2040" : "var(--easy-bg)",
-                    border: sel
-                      ? "2px solid var(--teal)"
-                      : isHard
-                        ? "1px solid var(--teal)"
-                        : "1px solid var(--stage-upcoming)",
-                    boxShadow: isHard ? "0 0 6px rgba(0,194,199,0.35)" : undefined,
-                  }}
-                >
-                  {sel && (
-                    <span className="absolute top-1.5 right-2 text-[color:var(--teal)]">✓</span>
-                  )}
-                  <div className="flex items-center gap-2">
-                    <span className="text-xl">{isHard ? "🧩" : "📋"}</span>
-                    <span className="font-bold text-sm">
-                      {isHard
-                        ? t(lang, "El problema difícil", "The hard problem")
-                        : t(lang, "Ejercicios de práctica", "Practice exercises")}
-                    </span>
-                  </div>
-                  <div className="text-[12px] text-[color:var(--muted)] mt-1 leading-snug">
-                    {isHard
-                      ? t(
-                          lang,
-                          "Resolvé 5 problemas de álgebra que nunca viste.",
-                          "Solve 5 algebra problems you've never seen.",
-                        )
-                      : t(
-                          lang,
-                          "Resolvé 20 multiplicaciones que ya sabés hacer.",
-                          "Solve 20 multiplications you already know.",
-                        )}
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-
-          {choice && (
-            <p className="mt-2 text-[12px] italic text-[color:var(--muted)] fade-in">
-              {choice === "easy"
-                ? t(
-                    lang,
-                    "Tiene sentido elegir lo fácil. Pero tu cerebro necesita esfuerzo para cambiar.",
-                    "Easy is comfortable. But your brain needs effort to change.",
-                  )
-                : t(
-                    lang,
-                    "Elegiste el desafío — eso activa el cambio en tu cerebro.",
-                    "You chose the challenge — that activates change in your brain.",
-                  )}
+        <div className="mt-3 grid md:grid-cols-2 gap-6 flex-1 min-h-0">
+          {/* LEFT: instructions + choices */}
+          <div className="flex flex-col min-h-0 overflow-hidden">
+            <p className="text-sm md:text-base">
+              {t(
+                lang,
+                "Ya sabés que tu cerebro puede cambiar. ¿Qué hace que eso ocurra? Empieza con una decisión.",
+                "You already know your brain can change. What makes it happen? It starts with a choice.",
+              )}
             </p>
-          )}
 
-          {choice && (
-            <div className="mt-auto pt-2 flex justify-start fade-in">
-              <NextButton onClick={onNext}>{t(lang, "Siguiente →", "Next →")}</NextButton>
+            <div className="mt-2 rounded-lg border border-[color:var(--teal)]/40 bg-[color:var(--teal)]/10 p-2.5 text-[13px] leading-snug">
+              <span className="font-bold text-[color:var(--teal)]">
+                {t(lang, "Qué hacer: ", "What to do: ")}
+              </span>
+              {t(
+                lang,
+                "Elegí la opción que realmente harías y mirá qué le pasa a tu cerebro.",
+                "Pick the option you'd actually do and watch what happens to your brain.",
+              )}
             </div>
-          )}
-        </div>
 
-        {/* RIGHT: nested brain */}
-        <div className="flex flex-col items-center justify-center min-h-0">
-          <p className="text-[11px] uppercase tracking-[0.15em] text-[color:var(--muted)] mb-1">
-            {t(lang, "Tu cerebro", "Your brain")}
-          </p>
-          <div className="flex-1 min-h-0 flex items-center justify-center w-full">
-            <NestedBrain choice={choice} />
+            <p className="mt-2 text-[13px] text-[color:var(--muted)]">
+              {t(
+                lang,
+                "Tu profe te da dos opciones de tarea:",
+                "Your teacher gives you two homework options:",
+              )}
+            </p>
+
+            <div className="mt-2 flex flex-col gap-2">
+              {(["easy", "hard"] as const).map((k) => {
+                const isHard = k === "hard";
+                const sel = choice === k;
+                return (
+                  <button
+                    key={k}
+                    type="button"
+                    onClick={() => setChoice(k)}
+                    className="relative rounded-xl p-3 text-left transition-all"
+                    style={{
+                      backgroundColor: isHard ? "#0D2040" : "var(--easy-bg)",
+                      border: sel
+                        ? "2px solid var(--teal)"
+                        : isHard
+                          ? "1px solid var(--teal)"
+                          : "1px solid var(--stage-upcoming)",
+                      boxShadow: isHard ? "0 0 6px rgba(0,194,199,0.35)" : undefined,
+                    }}
+                  >
+                    {sel && (
+                      <span className="absolute top-1.5 right-2 text-[color:var(--teal)]">✓</span>
+                    )}
+                    <div className="flex items-center gap-2">
+                      <span className="text-xl">{isHard ? "🧩" : "📋"}</span>
+                      <span className="font-bold text-sm">
+                        {isHard
+                          ? t(lang, "El problema difícil", "The hard problem")
+                          : t(lang, "Ejercicios de práctica", "Practice exercises")}
+                      </span>
+                    </div>
+                    <div className="text-[12px] text-[color:var(--muted)] mt-1 leading-snug">
+                      {isHard
+                        ? t(
+                            lang,
+                            "Resolvé 5 problemas de álgebra que nunca viste.",
+                            "Solve 5 algebra problems you've never seen.",
+                          )
+                        : t(
+                            lang,
+                            "Resolvé 20 multiplicaciones que ya sabés hacer.",
+                            "Solve 20 multiplications you already know.",
+                          )}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+
+            {choice && (
+              <p className="mt-2 text-[12px] italic text-[color:var(--muted)] fade-in">
+                {choice === "easy"
+                  ? t(
+                      lang,
+                      "Tiene sentido elegir lo fácil. Pero tu cerebro necesita esfuerzo para cambiar.",
+                      "Easy is comfortable. But your brain needs effort to change.",
+                    )
+                  : t(
+                      lang,
+                      "Elegiste el desafío — eso activa el cambio en tu cerebro.",
+                      "You chose the challenge — that activates change in your brain.",
+                    )}
+              </p>
+            )}
+
+            {choice && (
+              <div className="mt-auto pt-3 flex justify-start fade-in">
+                <NextButton onClick={onNext}>{t(lang, "Siguiente →", "Next →")}</NextButton>
+              </div>
+            )}
           </div>
-          <p
-            className="mt-1 text-sm text-center max-w-sm font-bold"
-            style={{
-              color:
-                choice === null
-                  ? "var(--muted)"
-                  : "var(--teal)",
-            }}
-          >
-            {choice === null
-              ? t(lang, "Tu cerebro está listo. Elegí.", "Your brain is ready. Make a choice.")
-              : choice === "easy"
-                ? t(
-                    lang,
-                    "Cerebro pequeño, pocas conexiones nuevas.",
-                    "Small brain, few new connections.",
-                  )
-                : t(
-                    lang,
-                    "Cerebro más grande, muchas conexiones nuevas.",
-                    "Bigger brain, many new connections.",
-                  )}
-          </p>
+
+          {/* RIGHT: nested brain */}
+          <div className="flex flex-col items-center justify-center min-h-0 md:border-l md:border-[color:var(--teal)]/20 md:pl-6">
+            <p className="text-[11px] uppercase tracking-[0.15em] text-[color:var(--muted)] mb-1">
+              {t(lang, "Tu cerebro", "Your brain")}
+            </p>
+            <div className="flex-1 min-h-0 flex items-center justify-center w-full">
+              <NestedBrain choice={choice} />
+            </div>
+            <p
+              className="mt-1 text-[13px] text-center max-w-sm font-bold"
+              style={{
+                color:
+                  choice === null
+                    ? "var(--muted)"
+                    : "var(--teal)",
+              }}
+            >
+              {choice === null
+                ? t(lang, "Tu cerebro está listo. Elegí.", "Your brain is ready. Make a choice.")
+                : choice === "easy"
+                  ? t(
+                      lang,
+                      "Cerebro pequeño, pocas conexiones nuevas.",
+                      "Small brain, few new connections.",
+                    )
+                  : t(
+                      lang,
+                      "Cerebro más grande, muchas conexiones nuevas.",
+                      "Bigger brain, many new connections.",
+                    )}
+            </p>
+          </div>
         </div>
       </div>
     </div>
