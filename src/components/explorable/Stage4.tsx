@@ -210,7 +210,7 @@ export default function Stage4({
   const timerColor = timeLeft <= 2 ? "#FF6B6B" : TEAL;
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-3 fade-in" style={{ minHeight: "calc(100vh - 160px)" }}>
+    <div className="max-w-6xl mx-auto px-4 py-3 fade-in" style={{ minHeight: "calc(100dvh - 60px)" }}>
       {/* Compact header */}
       <div className="text-center max-w-3xl mx-auto space-y-1 mb-4">
         <p className="text-sm text-[color:var(--muted)]">
