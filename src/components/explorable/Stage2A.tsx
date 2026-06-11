@@ -125,13 +125,13 @@ export default function Stage2A({
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.6fr)] gap-6 items-stretch h-[calc(100dvh-60px)] min-h-[560px] overflow-hidden fade-in">
+    <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.7fr)] gap-4 items-stretch h-[calc(100dvh-72px)] min-h-[520px] overflow-hidden fade-in">
       {/* TEXT */}
       <div className="flex flex-col min-h-0 overflow-hidden">
-        <h2 className="font-bold text-[color:var(--teal)] text-[20px] md:text-[22px] leading-tight">
+        <h2 className="font-bold text-[color:var(--teal)] text-[18px] md:text-[20px] leading-tight">
           {t(lang, "Tu cerebro funciona como una ciudad", "Your brain works like a city")}
         </h2>
-        <div className="mt-2 space-y-1.5" style={{ fontSize: 13.5, lineHeight: 1.45, maxWidth: 480 }}>
+        <div className="mt-2 space-y-1" style={{ fontSize: 12.5, lineHeight: 1.4, maxWidth: 480 }}>
           {t(
             lang,
             `Cada vez que aprendes algo nuevo, se construye una nueva calle entre dos lugares que antes no estaban conectados.|Al principio esa calle es un camino de tierra — lento y difícil. Pero cada vez que practicas, se pavimenta, se ensancha, y con el tiempo se convierte en una autopista.|Ahora reemplaza los barrios por neuronas y las calles por conexiones entre ellas — y tienes exactamente lo que pasa en tu cerebro cuando aprendes.`,
@@ -141,10 +141,10 @@ export default function Stage2A({
             .map((p, i) => <p key={i}>{p}</p>)}
         </div>
         <div
-          className="mt-2 rounded-lg border border-[color:var(--teal)]/40 bg-[color:var(--teal)]/5 p-2.5 text-[12.5px] leading-snug"
+          className="mt-2 rounded-lg border border-[color:var(--teal)]/40 bg-[color:var(--teal)]/5 p-2 text-[11.5px] leading-snug"
           style={{ maxWidth: 480 }}
         >
-          <p className="font-bold text-[color:var(--teal)] mb-1">
+          <p className="font-bold text-[color:var(--teal)] mb-0.5">
             {t(lang, "Cómo jugar", "How to play")}
           </p>
           <ul className="list-disc pl-5 space-y-0.5">
@@ -165,8 +165,8 @@ export default function Stage2A({
           </ul>
         </div>
 
-        <p className="mt-1.5 font-bold text-[color:var(--teal)] text-[13px]" aria-live="polite">{progressLabel}</p>
-        <p className="mt-0.5 text-[11px] text-[color:var(--muted)]" aria-live="polite">
+        <p className="mt-1 font-bold text-[color:var(--teal)] text-[12px]" aria-live="polite">{progressLabel}</p>
+        <p className="mt-0.5 text-[10.5px] text-[color:var(--muted)]" aria-live="polite">
           {t(
             lang,
             `Autopistas: ${highways} / ${HIGHWAY_GOAL}`,
@@ -174,12 +174,12 @@ export default function Stage2A({
           )}
         </p>
 
-        <div className="mt-2">
+        <div className="mt-1.5">
           <NextButton onClick={onSubNext} disabled={highways < HIGHWAY_GOAL} pulse={highways === HIGHWAY_GOAL}>
             {t(lang, "Siguiente →", "Next →")}
           </NextButton>
           {highways < HIGHWAY_GOAL && (
-            <p className="mt-1.5 text-[11px] text-[color:var(--muted)]">
+            <p className="mt-1 text-[10.5px] text-[color:var(--muted)]">
               {t(
                 lang,
                 `Necesitás ${HIGHWAY_GOAL} autopistas para continuar.`,
@@ -190,8 +190,9 @@ export default function Stage2A({
         </div>
       </div>
 
+
       {/* SIM */}
-      <div className="relative rounded-2xl p-3 transition-colors duration-500 flex flex-col min-h-0 h-full" style={{ backgroundColor: bg }}>
+      <div className="relative rounded-2xl p-2 transition-colors duration-500 flex flex-col min-h-0 h-full" style={{ backgroundColor: bg }}>
         {banner === "show" && (
           <div className="absolute top-0 left-0 right-0 z-10 bg-[color:var(--teal)] text-[color:var(--bg)] p-3 text-sm font-bold text-center slide-down rounded-t-2xl">
             {t(
@@ -202,13 +203,13 @@ export default function Stage2A({
           </div>
         )}
 
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 items-stretch flex-1 min-h-0">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-3 items-stretch flex-1 min-h-0">
           {/* CITY */}
           <div className="flex flex-col items-center min-h-0">
-            <p className="text-[12px] uppercase tracking-[0.15em] text-[color:var(--teal)] mb-1 shrink-0">
+            <p className="text-[11px] uppercase tracking-[0.15em] text-[color:var(--teal)] mb-0.5 shrink-0">
               {t(lang, "Ciudad", "City")}
             </p>
-            <div className="relative w-full flex-1 min-h-0 max-w-[400px] aspect-square mx-auto">
+            <div className="relative w-full flex-1 min-h-0 max-w-[360px] mx-auto">
               <svg width="100%" height="100%" viewBox={`0 0 ${SIZE} ${SIZE}`} preserveAspectRatio="xMidYMid meet" className="absolute inset-0">
                 <defs>
                   <filter id="goldGlow" x="-50%" y="-50%" width="200%" height="200%">
@@ -306,12 +307,12 @@ export default function Stage2A({
                     left: `${((pos(0, 0).x + pos(0, 1).x) / 2 / SIZE) * 100}%`,
                     top: `${(pos(0, 0).y / SIZE) * 100 - 8}%`,
                     transform: "translateX(-50%)",
-                    width: 180,
+                    width: 150,
                     animation: "arrowPulse 1.5s ease-in-out infinite",
                   }}
                 >
-                  <div className="text-2xl text-[color:var(--gold)]">↓</div>
-                  <div className="text-[11px] bg-[color:var(--gold)] text-[color:var(--bg)] px-2 py-1 rounded">
+                  <div className="text-xl text-[color:var(--gold)]">↓</div>
+                  <div className="text-[10px] bg-[color:var(--gold)] text-[color:var(--bg)] px-2 py-1 rounded">
                     {t(lang, "Haz clic varias veces en la misma calle para pavimentarla", "Click the same street several times to pave it")}
                   </div>
                 </div>
@@ -321,10 +322,10 @@ export default function Stage2A({
 
           {/* NEURONS */}
           <div className="flex flex-col items-center min-h-0">
-            <p className="text-[12px] uppercase tracking-[0.15em] text-[color:var(--teal)] mb-1 shrink-0">
+            <p className="text-[11px] uppercase tracking-[0.15em] text-[color:var(--teal)] mb-0.5 shrink-0">
               {t(lang, "Neuronas", "Neurons")}
             </p>
-            <div className="w-full flex-1 min-h-0 max-w-[400px] aspect-square mx-auto">
+            <div className="w-full flex-1 min-h-0 max-w-[360px] mx-auto">
               <svg width="100%" height="100%" viewBox={`-30 -30 ${SIZE + 60} ${SIZE + 60}`} preserveAspectRatio="xMidYMid meet">
                 <defs>
                   <filter id="teaLineGlow" x="-50%" y="-50%" width="200%" height="200%">
