@@ -202,7 +202,7 @@ export default function Stage2A({
           </div>
         )}
 
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 items-start">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 items-start">
           {/* CITY */}
           <div className="flex flex-col items-center">
             <p className="text-[12px] uppercase tracking-[0.15em] text-[color:var(--teal)] mb-2">
