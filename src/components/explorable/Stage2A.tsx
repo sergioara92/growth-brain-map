@@ -307,12 +307,12 @@ export default function Stage2A({
                     left: `${((pos(0, 0).x + pos(0, 1).x) / 2 / SIZE) * 100}%`,
                     top: `${(pos(0, 0).y / SIZE) * 100 - 8}%`,
                     transform: "translateX(-50%)",
-                    width: 180,
+                    width: 150,
                     animation: "arrowPulse 1.5s ease-in-out infinite",
                   }}
                 >
-                  <div className="text-2xl text-[color:var(--gold)]">↓</div>
-                  <div className="text-[11px] bg-[color:var(--gold)] text-[color:var(--bg)] px-2 py-1 rounded">
+                  <div className="text-xl text-[color:var(--gold)]">↓</div>
+                  <div className="text-[10px] bg-[color:var(--gold)] text-[color:var(--bg)] px-2 py-1 rounded">
                     {t(lang, "Haz clic varias veces en la misma calle para pavimentarla", "Click the same street several times to pave it")}
                   </div>
                 </div>
@@ -322,10 +322,10 @@ export default function Stage2A({
 
           {/* NEURONS */}
           <div className="flex flex-col items-center min-h-0">
-            <p className="text-[12px] uppercase tracking-[0.15em] text-[color:var(--teal)] mb-1 shrink-0">
+            <p className="text-[11px] uppercase tracking-[0.15em] text-[color:var(--teal)] mb-0.5 shrink-0">
               {t(lang, "Neuronas", "Neurons")}
             </p>
-            <div className="w-full flex-1 min-h-0 max-w-[400px] aspect-square mx-auto">
+            <div className="w-full flex-1 min-h-0 max-w-[360px] mx-auto">
               <svg width="100%" height="100%" viewBox={`-30 -30 ${SIZE + 60} ${SIZE + 60}`} preserveAspectRatio="xMidYMid meet">
                 <defs>
                   <filter id="teaLineGlow" x="-50%" y="-50%" width="200%" height="200%">
