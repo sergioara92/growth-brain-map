@@ -222,18 +222,29 @@ export default function ProgressBar({ stage, lang }: { stage: number; lang: Lang
                 {n.numberLabel}
               </text>
 
-              <text
-                x={labelX - n.x}
-                y={2}
-                textAnchor="start"
-                dominantBaseline="central"
-                fontSize={labelFontSize}
-                fill={labelColor}
-                className="hidden-on-mobile"
-                style={{ fontWeight: isActive ? 600 : 400 }}
-              >
-                {lang === "es" ? n.label.es : n.label.en}
-              </text>
+              {(() => {
+                const raw = lang === "es" ? n.label.es : n.label.en;
+                const lines = raw.split("\n");
+                const yStart = 2 - ((lines.length - 1) * labelFontSize * 1.1) / 2;
+                return (
+                  <text
+                    x={labelX - n.x}
+                    y={yStart}
+                    textAnchor="start"
+                    dominantBaseline="central"
+                    fontSize={labelFontSize}
+                    fill={labelColor}
+                    className="hidden-on-mobile"
+                    style={{ fontWeight: isActive ? 600 : 400 }}
+                  >
+                    {lines.map((line, i) => (
+                      <tspan key={i} x={labelX - n.x} dy={i === 0 ? 0 : labelFontSize * 1.1}>
+                        {line}
+                      </tspan>
+                    ))}
+                  </text>
+                );
+              })()}
 
               <title>{lang === "es" ? n.label.es : n.label.en}</title>
             </g>

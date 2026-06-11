@@ -8,7 +8,7 @@ export const stageLabels = [
   { es: "Cómo cambiarlo", en: "How to change it" },
   { es: "El desafío", en: "The challenge" },
   { es: "El error", en: "The mistake" },
-  { es: "Atribuciones del fracaso", en: "Attributions of failure" },
+  { es: "Atribuciones\ndel fracaso", en: "Attributions\nof failure" },
   { es: "¿Y ahora?", en: "Now what?" },
 ];
 
