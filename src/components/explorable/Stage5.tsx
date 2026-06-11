@@ -229,28 +229,30 @@ export default function Stage5({
         ))}
       </div>
 
-      <div className="mt-6 flex justify-center">
+      <div className="mt-6 flex justify-center items-center gap-3 flex-wrap">
         <button
           type="button"
           onClick={verificar}
           disabled={!placedAll}
-          className="px-6 py-3 rounded-full font-bold w-full max-w-sm"
+          className="px-6 py-3 rounded-full font-bold"
           style={{
             backgroundColor: placedAll ? "var(--coral)" : "var(--stage-upcoming)",
             color: placedAll ? "white" : "var(--muted)",
             cursor: placedAll ? "pointer" : "not-allowed",
             minHeight: 48,
+            minWidth: 180,
           }}
         >
           {t(lang, "Verificar", "Check")}
         </button>
+
+        {canShowNext && (
+          <div className="fade-in">
+            <NextButton onClick={onNext}>{t(lang, "Siguiente →", "Next →")}</NextButton>
+          </div>
+        )}
       </div>
 
-      {canShowNext && (
-        <div className="mt-6 flex justify-center fade-in">
-          <NextButton onClick={onNext}>{t(lang, "Siguiente →", "Next →")}</NextButton>
-        </div>
-      )}
     </div>
   );
 }
