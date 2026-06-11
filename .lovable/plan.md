@@ -1,73 +1,60 @@
-## Goal
+# Stage 2A — "Your brain works like a city"
 
-Turn the progress bar at the top of the explorable into a visual replica of the causal neuron diagram. Instead of 7 neurons in a straight line, the network mirrors the conceptual flow students are building in their minds:
+File: `src/components/explorable/Stage2A.tsx`
 
-- 4 neurons in a linear chain (the "what is happening / evidence" arc)
-- 1 branching neuron (the "now that you know, how can you change it" bridge)
-- 3 parallel neurons spreading out (the three behavioural paths)
-- 1 converging final neuron (the closing reflection)
+Goal: make the activity self-explanatory. Tell the student exactly what to do, how many clicks per street, and how many highways are needed to advance.
 
-Neurons start dim/off and "turn on" as the student finishes each section, so by the end the full causal diagram is illuminated.
+Changes:
+- Add an explicit instruction block under the existing paragraphs:
+  - "Click each street **4 times** to pave it into a highway."
+  - "Build at least **4 highways** to continue."
+- Replace the current dynamic `progressLabel` with a progress line that shows live counters against goals:
+  - "Highways built: X / 4"
+  - "Keep clicking the same street to upgrade it: dirt → paved → wide → highway."
+- Update the bottom status line (currently `Streets built: X | Highways: Y`) to include the highway goal: `Streets: X · Highways: Y / 4`.
+- Update the initial hint tooltip from "Click a street to start building" to "Click the same street several times to pave it."
+- Gate `NextButton` on `highways >= 4` (instead of the current `level2plus < 4`), and add a small helper line under it: "You need 4 highways to continue." that disappears once met.
+- Bilingual strings (ES/EN) via the existing `t(lang, ..., ...)` helper.
 
-## Mapping stages → neurons
+No layout/visual restructuring of the city/neuron SVGs — only text, counters, hint, and the gating threshold change.
 
-Current app has 7 stages. They map onto the diagram as follows:
+# Stage 3 — Challenge ("hard problem vs. practice exercises")
 
-```text
- A ── B ── C ── D ── E ──┬── F1 ──┐
-                          ├── F2 ──┤── G
-                          └── F3 ──┘
-```
+File: `src/components/explorable/Stage3.tsx` (BrainScanner stays as-is and is reused).
 
-| Diagram node | Stage | Section title (short)                              |
-| ------------ | ----- | -------------------------------------------------- |
-| A            | 1     | Do you think you can become smarter?               |
-| B            | 2     | Let us know what you think                         |
-| C            | 3     | The evidence: how the brain works                  |
-| D            | 4     | It's called neuroplasticity                        |
-| E (branch)   | 5     | Now that you know, how can you change it           |
-| F1 / F2 / F3 | 6     | Three behavioural paths (the 3 columns in Stage5)  |
-| G (converge) | 7     | Now tell us what you think                         |
+Goal: center the whole stage in one column, make the instructions explicit, and show the two possible brains stacked so the student can compare easy vs. hard.
 
-The three F-neurons are a visual representation of the three columns inside stage 6; the student still advances through one logical stage, but the bar shows all three lit at once when that stage is active/done.
+Layout changes:
+- Replace the current two-column grid with a single centered column (`max-w-2xl mx-auto text-center`). Order, top to bottom:
+  1. Section title (new): "Your turn: pick a challenge".
+  2. Intro paragraph (kept, centered).
+  3. Instruction block (new): "Read both options. Pick the one you'd actually do. Then watch what happens to your brain."
+  4. The teacher prompt card (centered, full width of the column).
+  5. The two option buttons in a centered 2-column grid (same buttons, just centered).
+  6. The brain visualization area (see below).
+  7. Reflection line (kept, shown after choice).
+  8. `NextButton` (kept, centered, appears after a choice).
 
-## What changes
+Brain visualization (replaces the single `BrainScanner` on the right):
+- Render TWO brains in the same centered slot, stacked vertically with the "hard" brain drawn ON TOP of the "easy" brain so the size/connection contrast is obvious:
+  - Bottom brain = "easy" choice result: **medium-sized**, **few connections** (BrainScanner zones `Z1: dim, Z2: dim, Z3: resting, Z4: resting`, size `medium`).
+  - Top brain = "hard" choice result: **larger** than the easy one, **many more glowing connections** (zones `Z1: glowing, Z2: glowing, Z3: active, Z4: active`, size `large`, with extra emphasis — see "Brain size differentiation" below).
+- Each brain gets a caption directly under it: "Practice exercises → medium brain, few new connections" / "The hard problem → bigger brain, many new connections".
+- Before any choice: both brains shown dimmed (≈30% opacity) as a preview of "these are your two possible outcomes".
+- After choosing "easy": the easy brain becomes fully opaque and highlighted; the hard brain dims further.
+- After choosing "hard": the hard brain becomes fully opaque and highlighted; the easy brain dims further.
 
-Only the progress bar. No stage content, no routing, no state changes elsewhere.
+Brain size differentiation:
+- `BrainScanner` already supports `size="medium" | "large"`. Use `medium` for the easy brain and `large` for the hard brain so the hard-choice brain is visually bigger.
+- Wrap each brain in a `<div>` that controls opacity transitions (300ms) based on `choice`.
 
-### `src/components/explorable/ProgressBar.tsx` (rewrite)
+Copy additions (ES/EN, via `t`):
+- Title: "Tu turno: elegí un desafío" / "Your turn: pick a challenge".
+- Instructions: "Leé las dos opciones. Elegí la que realmente harías. Después mirá qué le pasa a tu cerebro." / "Read both options. Pick the one you'd actually do. Then watch what happens to your brain."
+- Easy caption: "Ejercicios de práctica → cerebro mediano, pocas conexiones nuevas." / "Practice exercises → medium brain, few new connections."
+- Hard caption: "El problema difícil → cerebro más grande, muchas conexiones nuevas." / "The hard problem → bigger brain, many more new connections."
 
-- Replace the equally-spaced 7-soma row with a hand-laid topology in a wider SVG viewBox (e.g. `0 0 1400 200`) that fits A–D on the left, the E fan in the middle, F1/F2/F3 stacked vertically, and G on the right.
-- Hard-coded coordinates for each of the 9 visual neurons (A, B, C, D, E, F1, F2, F3, G).
-- Axon paths:
-  - Straight curved connectors A→B→C→D→E (linear chain).
-  - Three diverging curves E→F1, E→F2, E→F3 (fan-out).
-  - Three converging curves F1→G, F2→G, F3→G.
-- State per neuron driven by current `stage`:
-  - `done` (stage already passed) → fully lit soma, solid teal axons leaving it.
-  - `active` (current stage) → glowing soma + animated synaptic pulse on the incoming axon, matching the existing `animateMotion` pattern.
-  - `upcoming` → dim outline, dashed axons.
-  - F1/F2/F3 share the state of stage 6 — they light up together (and the three diverging axons from E animate together).
-  - G's three incoming axons go solid once stage 7 is reached.
-- Each soma keeps the current visual language (radial gradient, cyan rim, synapse dots around the rim, decorative dendrites) so it stays consistent with the existing aesthetic and the uploaded reference SVG.
-- Stage number stays inside each soma (1–7). For F1/F2/F3 we use `6a / 6b / 6c` labels or short column names from `i18n` so students can still read them.
-- Title label below each soma stays on desktop, hidden on mobile (same `hidden-on-mobile` rule).
-- Bar height grows to fit the vertical fan: roughly `h-[140px] sm:h-[180px]`. `Explorable.tsx` `<main>` top padding bumps to `pt-[150px] sm:pt-[200px]` so titles stay clear of the bar.
+# Out of scope
 
-### `src/components/explorable/Explorable.tsx`
-
-- Only adjustment: increase top padding on `<main>` to clear the taller bar (no logic changes).
-
-### `src/components/explorable/i18n.ts`
-
-- Add labels for the three parallel paths (e.g. `path1`, `path2`, `path3`) in ES + EN so F1/F2/F3 can show meaningful sub-titles. Names will mirror the three columns already used in Stage5 (`útil`, `no útil`, `sin estrategia` / English equivalents).
-
-## Out of scope
-
-- No changes to stage components, copy, routing, beliefs, or scoring.
-- No animation on the stage content itself — only the progress bar animates/lights up.
-- No new dependencies.
-
-## Open question (not blocking the plan)
-
-The current Stage 6 (`Stage5.tsx`) treats the three columns as part of a single screen. The plan represents them as three parallel neurons that all share the "active" state when stage 6 is current. If you'd rather have students step through each path one-by-one (turning F1, then F2, then F3 on individually), say the word and I'll split stage 6 into 6a/6b/6c stages instead.
+- No changes to `Stage4`, `Stage5`, `Stage6`, `ProgressBar`, `BrainScanner` internals, or `Explorable` wiring.
+- No new dependencies; uses existing `BrainScanner`, `NextButton`, `t`, and Tailwind utilities.
