@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import type { Lang } from "./i18n";
 import { t } from "./i18n";
-import BrainScanner from "./BrainScanner";
+
 import { NextButton } from "./buttons";
 
 type Col = "util" | "no-util" | "sin-estrategia";
@@ -247,22 +247,8 @@ export default function Stage5({
       </div>
 
       {canShowNext && (
-        <div className="mt-8 fade-in">
-          <p className="text-center max-w-xl mx-auto">
-            {t(
-              lang,
-              "Las estrategias útiles activan más regiones de tu cerebro. El esfuerzo sin estrategia activa pocas. Y las actitudes de rendición las apagan.",
-              "Helpful strategies activate more regions of your brain. Effort without strategy activates few. And giving-up attitudes shut them down.",
-            )}
-          </p>
-          <div className="mt-6 flex justify-center gap-6 flex-wrap">
-            <div className="fade-in"><BrainScanner size="small" zones={{ Z1: "glowing", Z2: "glowing", Z3: "glowing", Z4: "glowing" }} label={t(lang, "Útil", "Helpful")} /></div>
-            <div className="fade-in" style={{ animationDelay: "200ms" }}><BrainScanner size="small" zones={{ Z1: "dim", Z2: "dim", Z3: "resting", Z4: "resting" }} label={t(lang, "Sin estrategia", "No strategy")} /></div>
-            <div className="fade-in" style={{ animationDelay: "400ms" }}><BrainScanner size="small" zones={{ Z1: "resting", Z2: "resting", Z3: "resting", Z4: "resting" }} label={t(lang, "No útil", "Not helpful")} /></div>
-          </div>
-          <div className="mt-6 flex justify-center">
-            <NextButton onClick={onNext}>{t(lang, "Siguiente →", "Next →")}</NextButton>
-          </div>
+        <div className="mt-6 flex justify-center fade-in">
+          <NextButton onClick={onNext}>{t(lang, "Siguiente →", "Next →")}</NextButton>
         </div>
       )}
     </div>
