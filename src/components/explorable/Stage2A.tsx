@@ -192,7 +192,7 @@ export default function Stage2A({
 
 
       {/* SIM */}
-      <div className="relative rounded-2xl p-3 transition-colors duration-500 flex flex-col min-h-0 h-full" style={{ backgroundColor: bg }}>
+      <div className="relative rounded-2xl p-2 transition-colors duration-500 flex flex-col min-h-0 h-full" style={{ backgroundColor: bg }}>
         {banner === "show" && (
           <div className="absolute top-0 left-0 right-0 z-10 bg-[color:var(--teal)] text-[color:var(--bg)] p-3 text-sm font-bold text-center slide-down rounded-t-2xl">
             {t(
@@ -203,13 +203,13 @@ export default function Stage2A({
           </div>
         )}
 
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 items-stretch flex-1 min-h-0">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-3 items-stretch flex-1 min-h-0">
           {/* CITY */}
           <div className="flex flex-col items-center min-h-0">
-            <p className="text-[12px] uppercase tracking-[0.15em] text-[color:var(--teal)] mb-1 shrink-0">
+            <p className="text-[11px] uppercase tracking-[0.15em] text-[color:var(--teal)] mb-0.5 shrink-0">
               {t(lang, "Ciudad", "City")}
             </p>
-            <div className="relative w-full flex-1 min-h-0 max-w-[400px] aspect-square mx-auto">
+            <div className="relative w-full flex-1 min-h-0 max-w-[360px] mx-auto">
               <svg width="100%" height="100%" viewBox={`0 0 ${SIZE} ${SIZE}`} preserveAspectRatio="xMidYMid meet" className="absolute inset-0">
                 <defs>
                   <filter id="goldGlow" x="-50%" y="-50%" width="200%" height="200%">
