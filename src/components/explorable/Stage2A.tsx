@@ -125,13 +125,13 @@ export default function Stage2A({
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.6fr)] gap-6 items-stretch h-[calc(100dvh-60px)] min-h-[560px] overflow-hidden fade-in">
+    <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.7fr)] gap-4 items-stretch h-[calc(100dvh-72px)] min-h-[520px] overflow-hidden fade-in">
       {/* TEXT */}
       <div className="flex flex-col min-h-0 overflow-hidden">
-        <h2 className="font-bold text-[color:var(--teal)] text-[20px] md:text-[22px] leading-tight">
+        <h2 className="font-bold text-[color:var(--teal)] text-[18px] md:text-[20px] leading-tight">
           {t(lang, "Tu cerebro funciona como una ciudad", "Your brain works like a city")}
         </h2>
-        <div className="mt-2 space-y-1.5" style={{ fontSize: 13.5, lineHeight: 1.45, maxWidth: 480 }}>
+        <div className="mt-2 space-y-1" style={{ fontSize: 12.5, lineHeight: 1.4, maxWidth: 480 }}>
           {t(
             lang,
             `Cada vez que aprendes algo nuevo, se construye una nueva calle entre dos lugares que antes no estaban conectados.|Al principio esa calle es un camino de tierra — lento y difícil. Pero cada vez que practicas, se pavimenta, se ensancha, y con el tiempo se convierte en una autopista.|Ahora reemplaza los barrios por neuronas y las calles por conexiones entre ellas — y tienes exactamente lo que pasa en tu cerebro cuando aprendes.`,
