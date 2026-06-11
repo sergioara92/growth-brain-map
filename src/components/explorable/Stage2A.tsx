@@ -125,13 +125,13 @@ export default function Stage2A({
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.6fr)] gap-10 items-center min-h-[calc(100vh-100px)] fade-in">
+    <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.6fr)] gap-8 items-center h-[calc(100vh-140px)] overflow-hidden fade-in">
       {/* TEXT */}
       <div>
-        <h2 className="font-bold text-[color:var(--teal)] text-[28px] md:text-[32px] leading-tight">
+        <h2 className="font-bold text-[color:var(--teal)] text-[22px] md:text-[26px] leading-tight">
           {t(lang, "Tu cerebro funciona como una ciudad", "Your brain works like a city")}
         </h2>
-        <div className="mt-5 space-y-4" style={{ fontSize: 18, lineHeight: 1.65, maxWidth: 480 }}>
+        <div className="mt-3 space-y-2" style={{ fontSize: 14.5, lineHeight: 1.5, maxWidth: 480 }}>
           {t(
             lang,
             `Cada vez que aprendes algo nuevo, se construye una nueva calle entre dos lugares que antes no estaban conectados.|Al principio esa calle es un camino de tierra — lento y difícil. Pero cada vez que practicas, se pavimenta, se ensancha, y con el tiempo se convierte en una autopista.|Ahora reemplaza los barrios por neuronas y las calles por conexiones entre ellas — y tienes exactamente lo que pasa en tu cerebro cuando aprendes.`,
@@ -141,7 +141,7 @@ export default function Stage2A({
             .map((p, i) => <p key={i}>{p}</p>)}
         </div>
         <div
-          className="mt-5 rounded-lg border border-[color:var(--teal)]/40 bg-[color:var(--teal)]/5 p-4 text-[15px] leading-relaxed"
+          className="mt-3 rounded-lg border border-[color:var(--teal)]/40 bg-[color:var(--teal)]/5 p-3 text-[13px] leading-snug"
           style={{ maxWidth: 480 }}
         >
           <p className="font-bold text-[color:var(--teal)] mb-1">
@@ -165,8 +165,8 @@ export default function Stage2A({
           </ul>
         </div>
 
-        <p className="mt-4 font-bold text-[color:var(--teal)] text-[16px]" aria-live="polite">{progressLabel}</p>
-        <p className="mt-1 text-[14px] text-[color:var(--muted)]" aria-live="polite">
+        <p className="mt-2 font-bold text-[color:var(--teal)] text-[14px]" aria-live="polite">{progressLabel}</p>
+        <p className="mt-1 text-[12px] text-[color:var(--muted)]" aria-live="polite">
           {t(
             lang,
             `Autopistas: ${highways} / ${HIGHWAY_GOAL}`,
@@ -174,12 +174,12 @@ export default function Stage2A({
           )}
         </p>
 
-        <div className="mt-6">
+        <div className="mt-3">
           <NextButton onClick={onSubNext} disabled={highways < HIGHWAY_GOAL} pulse={highways === HIGHWAY_GOAL}>
             {t(lang, "Siguiente →", "Next →")}
           </NextButton>
           {highways < HIGHWAY_GOAL && (
-            <p className="mt-2 text-[13px] text-[color:var(--muted)]">
+            <p className="mt-2 text-[12px] text-[color:var(--muted)]">
               {t(
                 lang,
                 `Necesitás ${HIGHWAY_GOAL} autopistas para continuar.`,
@@ -191,7 +191,7 @@ export default function Stage2A({
       </div>
 
       {/* SIM */}
-      <div className="relative rounded-2xl p-5 transition-colors duration-500" style={{ backgroundColor: bg }}>
+      <div className="relative rounded-2xl p-3 transition-colors duration-500" style={{ backgroundColor: bg }}>
         {banner === "show" && (
           <div className="absolute top-0 left-0 right-0 z-10 bg-[color:var(--teal)] text-[color:var(--bg)] p-3 text-sm font-bold text-center slide-down rounded-t-2xl">
             {t(
