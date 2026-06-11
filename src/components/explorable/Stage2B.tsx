@@ -6,7 +6,7 @@ import neuronBio from "@/assets/neuron-bio.png";
 export default function Stage2B({ lang, onNext }: { lang: Lang; onNext: () => void }) {
   return (
     <div
-      className="mx-auto px-8 fade-in flex flex-col justify-start max-w-7xl h-[calc(100dvh-240px)] min-h-[480px] overflow-hidden pt-2"
+      className="mx-auto px-8 fade-in flex flex-col justify-start max-w-7xl h-[calc(100dvh-60px)] min-h-[520px] overflow-hidden pt-2"
     >
       <h2 className="font-bold text-[color:var(--teal)] text-center text-[22px] md:text-[26px] mb-3">
         {t(lang, "Eso tiene un nombre: neuroplasticidad", "That has a name: neuroplasticity")}
