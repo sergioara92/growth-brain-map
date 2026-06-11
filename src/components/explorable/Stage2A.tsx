@@ -125,7 +125,7 @@ export default function Stage2A({
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.6fr)] gap-6 items-stretch h-[calc(100dvh-240px)] min-h-[520px] overflow-hidden fade-in">
+    <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.6fr)] gap-6 items-stretch h-[calc(100dvh-60px)] min-h-[560px] overflow-hidden fade-in">
       {/* TEXT */}
       <div className="flex flex-col min-h-0 overflow-hidden">
         <h2 className="font-bold text-[color:var(--teal)] text-[20px] md:text-[22px] leading-tight">

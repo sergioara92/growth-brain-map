@@ -85,7 +85,7 @@ export default function Stage1({
             .stage1-headline, .stage1-cta, .stage1-brain-wrap, .stage1-brain { animation: none !important; }
           }
         `}</style>
-        <div className="h-[calc(100vh-120px)] max-w-6xl mx-auto px-6 flex items-center">
+        <div className="h-[calc(100dvh-60px)] max-w-6xl mx-auto px-6 flex items-center">
           <div className="grid grid-cols-1 md:grid-cols-[1.15fr_1fr] gap-10 md:gap-14 items-center w-full">
             <div className="text-center md:text-left order-2 md:order-1">
               <h1
@@ -124,7 +124,7 @@ export default function Stage1({
   const values = [beliefs.b1, beliefs.b2, beliefs.b3];
 
   return (
-    <div className="h-[calc(100vh-120px)] max-w-6xl mx-auto px-6 flex flex-col justify-center slide-up">
+    <div className="h-[calc(100dvh-60px)] max-w-6xl mx-auto px-6 flex flex-col justify-center slide-up">
       <div className="text-center mb-10">
         <h2 className="text-2xl md:text-3xl font-bold text-[color:var(--teal)]">
           {t(lang, "¿Qué tan de acuerdo estás con las siguientes ideas?", "How much do you agree with the following ideas?")}
