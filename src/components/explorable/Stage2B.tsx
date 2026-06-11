@@ -5,13 +5,15 @@ import neuronBio from "@/assets/neuron-bio.png";
 
 export default function Stage2B({ lang, onNext }: { lang: Lang; onNext: () => void }) {
   return (
-    <div className="mx-auto px-8 fade-in flex flex-col justify-center max-w-7xl" style={{ minHeight: "calc(100vh - 120px)" }}>
-      <h2 className="font-bold text-[color:var(--teal)] text-center text-[28px] md:text-[32px] mb-8">
+    <div
+      className="mx-auto px-8 fade-in flex flex-col justify-start max-w-7xl h-[calc(100dvh-240px)] min-h-[480px] overflow-hidden pt-2"
+    >
+      <h2 className="font-bold text-[color:var(--teal)] text-center text-[22px] md:text-[26px] mb-3">
         {t(lang, "Eso tiene un nombre: neuroplasticidad", "That has a name: neuroplasticity")}
       </h2>
 
-      <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-10 items-center">
-        <div className="space-y-3" style={{ fontSize: 17, lineHeight: 1.6, maxWidth: 520 }}>
+      <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-6 items-center flex-1 min-h-0">
+        <div className="space-y-2" style={{ fontSize: 14.5, lineHeight: 1.5, maxWidth: 520 }}>
           {t(
             lang,
             `Las conexiones entre tus neuronas pueden volverse más fuertes con el tiempo. Cuando te esfuerzas por aprender algo nuevo, esas conexiones se fortalecen. Y entre más practicas, más fuertes se vuelven.|Con el tiempo, esas conexiones más fuertes te hacen más inteligente en esa materia.|Eso no es solo una metáfora — es biología. Los científicos lo llaman neuroplasticidad: la capacidad de tu cerebro de cambiar físicamente en respuesta al aprendizaje.|Y lo mejor es que ese proceso no tiene un límite fijo.`,
@@ -21,7 +23,7 @@ export default function Stage2B({ lang, onNext }: { lang: Lang; onNext: () => vo
             .map((p, i) => <p key={i}>{p}</p>)}
         </div>
 
-        <div className="relative flex items-center justify-center">
+        <div className="relative flex items-center justify-center min-h-0 h-full">
           <div
             aria-hidden
             className="absolute inset-0"
@@ -30,21 +32,21 @@ export default function Stage2B({ lang, onNext }: { lang: Lang; onNext: () => vo
           <img
             src={neuronBio}
             alt={t(lang, "Ilustración de dos neuronas conectadas", "Illustration of two connected neurons")}
-            className="relative w-full max-w-[520px] mx-auto"
+            className="relative max-h-full max-w-[420px] w-auto h-auto object-contain mx-auto"
           />
         </div>
       </div>
 
       <div
-        className="mt-6 mx-auto text-center font-bold"
+        className="mt-3 mx-auto text-center font-bold"
         style={{
           maxWidth: 720,
           borderRadius: 14,
           border: "1px solid #00C2C7",
           backgroundColor: "#0D2040",
-          padding: 16,
+          padding: 12,
           color: "#FFFFFF",
-          fontSize: 15,
+          fontSize: 13,
           lineHeight: 1.5,
         }}
       >
@@ -55,7 +57,7 @@ export default function Stage2B({ lang, onNext }: { lang: Lang; onNext: () => vo
         )}
       </div>
 
-      <div className="mt-5 flex justify-center">
+      <div className="mt-3 flex justify-center">
         <NextButton onClick={onNext}>{t(lang, "Siguiente →", "Next →")}</NextButton>
       </div>
     </div>
