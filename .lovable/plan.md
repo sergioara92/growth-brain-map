@@ -1,60 +1,59 @@
-# Stage 2A — "Your brain works like a city"
+# Stage 3 redesign: "Pick a challenge"
 
-File: `src/components/explorable/Stage2A.tsx`
+Goal: fit everything on one screen (no scrolling), instructions + choices on the left, a single brain visualization on the right showing a small brain nested inside a bigger brain.
 
-Goal: make the activity self-explanatory. Tell the student exactly what to do, how many clicks per street, and how many highways are needed to advance.
+## Layout (`src/components/explorable/Stage3.tsx`)
 
-Changes:
-- Add an explicit instruction block under the existing paragraphs:
-  - "Click each street **4 times** to pave it into a highway."
-  - "Build at least **4 highways** to continue."
-- Replace the current dynamic `progressLabel` with a progress line that shows live counters against goals:
-  - "Highways built: X / 4"
-  - "Keep clicking the same street to upgrade it: dirt → paved → wide → highway."
-- Update the bottom status line (currently `Streets built: X | Highways: Y`) to include the highway goal: `Streets: X · Highways: Y / 4`.
-- Update the initial hint tooltip from "Click a street to start building" to "Click the same street several times to pave it."
-- Gate `NextButton` on `highways >= 4` (instead of the current `level2plus < 4`), and add a small helper line under it: "You need 4 highways to continue." that disappears once met.
-- Bilingual strings (ES/EN) via the existing `t(lang, ..., ...)` helper.
+Two-column grid that fills the viewport without scroll:
 
-No layout/visual restructuring of the city/neuron SVGs — only text, counters, hint, and the gating threshold change.
+```text
++----------------------------------------------------+
+| h2: Your turn — pick a challenge                   |
++-------------------------+--------------------------+
+| LEFT (instructions +    | RIGHT (nested brain)     |
+|   choices)              |                          |
+|                         |   ___________            |
+| • Intro line            |  /           \           |
+| • "What to do" box      | |  big brain  |          |
+|                         | |   ______    |          |
+| [Practice exercises]    | |  /  sm  \   |          |
+| [The hard problem]      | | | brain  |  |          |
+|                         | |  \______/   |          |
+| reflection (after pick) |  \___________/           |
+| Next button             |   caption                |
++-------------------------+--------------------------+
+```
 
-# Stage 3 — Challenge ("hard problem vs. practice exercises")
+- Outer container: `h-[calc(100vh-160px)] grid md:grid-cols-2 gap-6 px-6 py-4` so it never overflows. Inner columns use `min-h-0` and condensed text sizes.
+- Trim copy and paddings so left column fits without scrolling at typical heights.
+- Stack to single column on small widths (mobile only).
 
-File: `src/components/explorable/Stage3.tsx` (BrainScanner stays as-is and is reused).
+## Choice interaction
 
-Goal: center the whole stage in one column, make the instructions explicit, and show the two possible brains stacked so the student can compare easy vs. hard.
+- Two buttons stacked vertically on the left (compact). Selecting one sets `choice` and immediately lights the corresponding brain (no 1s delay before reflection — show reflection text right under the buttons).
+- Next button enabled after a choice is made.
 
-Layout changes:
-- Replace the current two-column grid with a single centered column (`max-w-2xl mx-auto text-center`). Order, top to bottom:
-  1. Section title (new): "Your turn: pick a challenge".
-  2. Intro paragraph (kept, centered).
-  3. Instruction block (new): "Read both options. Pick the one you'd actually do. Then watch what happens to your brain."
-  4. The teacher prompt card (centered, full width of the column).
-  5. The two option buttons in a centered 2-column grid (same buttons, just centered).
-  6. The brain visualization area (see below).
-  7. Reflection line (kept, shown after choice).
-  8. `NextButton` (kept, centered, appears after a choice).
+## Brain visualization (right column)
 
-Brain visualization (replaces the single `BrainScanner` on the right):
-- Render TWO brains in the same centered slot, stacked vertically with the "hard" brain drawn ON TOP of the "easy" brain so the size/connection contrast is obvious:
-  - Bottom brain = "easy" choice result: **medium-sized**, **few connections** (BrainScanner zones `Z1: dim, Z2: dim, Z3: resting, Z4: resting`, size `medium`).
-  - Top brain = "hard" choice result: **larger** than the easy one, **many more glowing connections** (zones `Z1: glowing, Z2: glowing, Z3: active, Z4: active`, size `large`, with extra emphasis — see "Brain size differentiation" below).
-- Each brain gets a caption directly under it: "Practice exercises → medium brain, few new connections" / "The hard problem → bigger brain, many new connections".
-- Before any choice: both brains shown dimmed (≈30% opacity) as a preview of "these are your two possible outcomes".
-- After choosing "easy": the easy brain becomes fully opaque and highlighted; the hard brain dims further.
-- After choosing "hard": the hard brain becomes fully opaque and highlighted; the easy brain dims further.
+One composite SVG, no stacking of two separate scanners:
+- Outer "big" brain silhouette (the bigger brain with many connections).
+- Inner "small" brain silhouette drawn inside it, scaled down and centered.
+- Both drawn dim/outline by default.
+- On `choice === "easy"`: the **small inner brain** lights up with a few connections (4 nodes, 2–3 links).
+- On `choice === "hard"`: the **big outer brain** lights up with many more connections (8–10 nodes spread across the silhouette, ~10–12 links forming a dense network). The small brain dims further.
+- Caption under the SVG changes based on choice.
 
-Brain size differentiation:
-- `BrainScanner` already supports `size="medium" | "large"`. Use `medium` for the easy brain and `large` for the hard brain so the hard-choice brain is visually bigger.
-- Wrap each brain in a `<div>` that controls opacity transitions (300ms) based on `choice`.
+Implementation: build the composite inline in `Stage3.tsx` as a single `<svg viewBox="0 0 320 280">` rather than reusing `BrainScanner` (which is a fixed 4-zone layout). Define two node arrays (`SMALL_NODES` ~4 points, `BIG_NODES` ~8–10 points) and corresponding link arrays. Render outline paths always; render nodes + links with opacity driven by `choice`. Reuse the existing `pulseGlow` animation and teal color `#00C2C7`.
 
-Copy additions (ES/EN, via `t`):
-- Title: "Tu turno: elegí un desafío" / "Your turn: pick a challenge".
-- Instructions: "Leé las dos opciones. Elegí la que realmente harías. Después mirá qué le pasa a tu cerebro." / "Read both options. Pick the one you'd actually do. Then watch what happens to your brain."
-- Easy caption: "Ejercicios de práctica → cerebro mediano, pocas conexiones nuevas." / "Practice exercises → medium brain, few new connections."
-- Hard caption: "El problema difícil → cerebro más grande, muchas conexiones nuevas." / "The hard problem → bigger brain, many more new connections."
+`BrainScanner.tsx` is not modified.
 
-# Out of scope
+## Copy
 
-- No changes to `Stage4`, `Stage5`, `Stage6`, `ProgressBar`, `BrainScanner` internals, or `Explorable` wiring.
-- No new dependencies; uses existing `BrainScanner`, `NextButton`, `t`, and Tailwind utilities.
+Keep current ES/EN strings for title, intro, "what to do", and the two option labels/descriptions. Shorten the reflection lines slightly so they fit without scroll. Add new captions for the nested brain:
+- default: "Your brain is ready. Make a choice." / "Tu cerebro está listo. Elegí."
+- easy: "Small brain, few new connections." / "Cerebro pequeño, pocas conexiones nuevas."
+- hard: "Bigger brain, many new connections." / "Cerebro más grande, muchas conexiones nuevas."
+
+## Out of scope
+
+No changes to other stages, `BrainScanner`, `Explorable` wiring, or i18n infrastructure beyond adding the new caption strings inline via `t()`.
