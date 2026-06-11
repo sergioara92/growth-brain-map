@@ -11,3 +11,9 @@ export const stageLabels = [
   { es: "Las reacciones", en: "The reactions" },
   { es: "¿Y ahora?", en: "Now what?" },
 ];
+
+export const pathLabels = [
+  { es: "Útil", en: "Useful" },
+  { es: "No útil", en: "Not useful" },
+  { es: "Sin estrategia", en: "No strategy" },
+];
