@@ -141,10 +141,10 @@ export default function Stage2A({
             .map((p, i) => <p key={i}>{p}</p>)}
         </div>
         <div
-          className="mt-2 rounded-lg border border-[color:var(--teal)]/40 bg-[color:var(--teal)]/5 p-2.5 text-[12.5px] leading-snug"
+          className="mt-2 rounded-lg border border-[color:var(--teal)]/40 bg-[color:var(--teal)]/5 p-2 text-[11.5px] leading-snug"
           style={{ maxWidth: 480 }}
         >
-          <p className="font-bold text-[color:var(--teal)] mb-1">
+          <p className="font-bold text-[color:var(--teal)] mb-0.5">
             {t(lang, "Cómo jugar", "How to play")}
           </p>
           <ul className="list-disc pl-5 space-y-0.5">
@@ -165,8 +165,8 @@ export default function Stage2A({
           </ul>
         </div>
 
-        <p className="mt-1.5 font-bold text-[color:var(--teal)] text-[13px]" aria-live="polite">{progressLabel}</p>
-        <p className="mt-0.5 text-[11px] text-[color:var(--muted)]" aria-live="polite">
+        <p className="mt-1 font-bold text-[color:var(--teal)] text-[12px]" aria-live="polite">{progressLabel}</p>
+        <p className="mt-0.5 text-[10.5px] text-[color:var(--muted)]" aria-live="polite">
           {t(
             lang,
             `Autopistas: ${highways} / ${HIGHWAY_GOAL}`,
@@ -174,12 +174,12 @@ export default function Stage2A({
           )}
         </p>
 
-        <div className="mt-2">
+        <div className="mt-1.5">
           <NextButton onClick={onSubNext} disabled={highways < HIGHWAY_GOAL} pulse={highways === HIGHWAY_GOAL}>
             {t(lang, "Siguiente →", "Next →")}
           </NextButton>
           {highways < HIGHWAY_GOAL && (
-            <p className="mt-1.5 text-[11px] text-[color:var(--muted)]">
+            <p className="mt-1 text-[10.5px] text-[color:var(--muted)]">
               {t(
                 lang,
                 `Necesitás ${HIGHWAY_GOAL} autopistas para continuar.`,
@@ -189,6 +189,7 @@ export default function Stage2A({
           )}
         </div>
       </div>
+
 
       {/* SIM */}
       <div className="relative rounded-2xl p-3 transition-colors duration-500 flex flex-col min-h-0 h-full" style={{ backgroundColor: bg }}>
