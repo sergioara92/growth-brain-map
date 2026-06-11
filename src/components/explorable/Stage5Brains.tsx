@@ -1,10 +1,138 @@
 import { useMemo, useState } from "react";
 import type { Lang } from "./i18n";
 import { t } from "./i18n";
-import BrainScanner, { type Zones } from "./BrainScanner";
 import { NextButton } from "./buttons";
 
 type ColorKey = "green" | "yellow" | "red";
+
+type NodeStyle = {
+  fill: string;
+  opacity: number;
+  filter?: string;
+  animate?: boolean;
+  r: number;
+};
+
+const BRAIN_PATH =
+  "M 40 70 C 30 50, 40 25, 65 22 C 75 10, 100 8, 115 18 C 135 12, 165 25, 165 55 C 175 65, 175 90, 160 100 C 158 120, 135 135, 110 130 C 95 142, 65 138, 55 122 C 38 115, 30 90, 40 70 Z";
+
+const LAYOUTS: Record<ColorKey, { nodes: { x: number; y: number }[]; w: number; h: number; linkAll: boolean }> = {
+  green: {
+    // 9 nodes in 3x3 grid clipped roughly to brain area
+    nodes: [
+      { x: 70, y: 45 },
+      { x: 100, y: 38 },
+      { x: 130, y: 45 },
+      { x: 65, y: 78 },
+      { x: 100, y: 78 },
+      { x: 135, y: 78 },
+      { x: 75, y: 112 },
+      { x: 100, y: 118 },
+      { x: 125, y: 112 },
+    ],
+    w: 320,
+    h: 256,
+    linkAll: true,
+  },
+  yellow: {
+    nodes: [
+      { x: 100, y: 48 },
+      { x: 140, y: 80 },
+      { x: 100, y: 112 },
+      { x: 60, y: 80 },
+    ],
+    w: 220,
+    h: 176,
+    linkAll: true,
+  },
+  red: {
+    nodes: [{ x: 100, y: 80 }],
+    w: 140,
+    h: 112,
+    linkAll: false,
+  },
+};
+
+function nodeStyleFor(color: ColorKey): NodeStyle {
+  switch (color) {
+    case "green":
+      return {
+        fill: "#00C2C7",
+        opacity: 1,
+        filter: "drop-shadow(0 0 10px #00C2C7)",
+        animate: true,
+        r: 7,
+      };
+    case "yellow":
+      return {
+        fill: "#00C2C7",
+        opacity: 0.65,
+        filter: "drop-shadow(0 0 4px #00C2C7)",
+        r: 8,
+      };
+    case "red":
+      return {
+        fill: "#666677",
+        opacity: 0.85,
+        r: 9,
+      };
+  }
+}
+
+function BrainViewer({ color }: { color: ColorKey }) {
+  const layout = LAYOUTS[color];
+  const ns = nodeStyleFor(color);
+  const linkStroke = color === "green" ? "#00C2C7" : color === "yellow" ? "#00C2C7" : "transparent";
+  const linkOpacity = color === "green" ? 0.75 : color === "yellow" ? 0.45 : 0;
+
+  // pairwise links
+  const links: { a: number; b: number }[] = [];
+  if (layout.linkAll) {
+    for (let i = 0; i < layout.nodes.length; i++) {
+      for (let j = i + 1; j < layout.nodes.length; j++) {
+        links.push({ a: i, b: j });
+      }
+    }
+  }
+
+  return (
+    <svg viewBox="0 0 200 160" width={layout.w} height={layout.h} role="img" aria-label={`Brain ${color}`}>
+      <path d={BRAIN_PATH} stroke="#444466" strokeWidth={2} fill="none" />
+      {links.map((l, i) => {
+        const a = layout.nodes[l.a];
+        const b = layout.nodes[l.b];
+        return (
+          <line
+            key={i}
+            x1={a.x}
+            y1={a.y}
+            x2={b.x}
+            y2={b.y}
+            stroke={linkStroke}
+            strokeWidth={1.2}
+            opacity={linkOpacity}
+          />
+        );
+      })}
+      {layout.nodes.map((n, i) => (
+        <circle
+          key={i}
+          cx={n.x}
+          cy={n.y}
+          r={ns.r}
+          fill={ns.fill}
+          opacity={ns.opacity}
+          style={{
+            filter: ns.filter,
+            transformOrigin: `${n.x}px ${n.y}px`,
+            animation: ns.animate ? "pulseGlow 2s ease-in-out infinite" : undefined,
+            transition: "fill 600ms, opacity 600ms",
+          }}
+        />
+      ))}
+    </svg>
+  );
+}
 
 export default function Stage5Brains({ lang, onNext }: { lang: Lang; onNext: () => void }) {
   const [active, setActive] = useState<ColorKey | null>(null);
@@ -25,7 +153,6 @@ export default function Stage5Brains({ lang, onNext }: { lang: Lang; onNext: () 
     ring: string;
     label: { es: string; en: string };
     caption: { es: string; en: string };
-    zones: Zones;
   }> = {
     green: {
       bg: "#10B981",
@@ -35,7 +162,6 @@ export default function Stage5Brains({ lang, onNext }: { lang: Lang; onNext: () 
         es: "Cerebro grande, con muchas conexiones nuevas.",
         en: "A bigger brain, with many new connections.",
       },
-      zones: { Z1: "glowing", Z2: "glowing", Z3: "glowing", Z4: "glowing" },
     },
     yellow: {
       bg: "#EAB308",
@@ -45,7 +171,6 @@ export default function Stage5Brains({ lang, onNext }: { lang: Lang; onNext: () 
         es: "Cerebro mediano, con algunas conexiones.",
         en: "A medium brain, with some connections.",
       },
-      zones: { Z1: "dim", Z2: "dim", Z3: "resting", Z4: "resting" },
     },
     red: {
       bg: "#EF4444",
@@ -55,7 +180,6 @@ export default function Stage5Brains({ lang, onNext }: { lang: Lang; onNext: () 
         es: "Cerebro pequeño, sin conexiones.",
         en: "A small brain, with no connections.",
       },
-      zones: { Z1: "resting", Z2: "resting", Z3: "resting", Z4: "resting" },
     },
   };
 
@@ -103,9 +227,9 @@ export default function Stage5Brains({ lang, onNext }: { lang: Lang; onNext: () 
       </div>
 
       <div className="flex-1 mt-3 flex flex-col items-center justify-center min-h-0">
-        {current ? (
+        {current && active ? (
           <div key={active} className="fade-in flex flex-col items-center">
-            <BrainScanner size="medium" zones={current.zones} />
+            <BrainViewer color={active} />
             <p className="mt-2 text-center text-sm" style={{ color: current.ring }}>
               {t(lang, current.caption.es, current.caption.en)}
             </p>
