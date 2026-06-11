@@ -8,6 +8,7 @@ import Stage3Bridge from "./Stage3Bridge";
 import Stage3 from "./Stage3";
 import Stage4 from "./Stage4";
 import Stage5 from "./Stage5";
+import Stage5Brains from "./Stage5Brains";
 import Stage6 from "./Stage6";
 
 type Col = "util" | "no-util" | "sin-estrategia";
