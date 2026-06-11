@@ -22,7 +22,7 @@ const CARDS = [
 
 export default function Stage3Bridge({ lang, onNext }: { lang: Lang; onNext: () => void }) {
   return (
-    <div className="min-h-[calc(100vh-160px)] max-w-6xl mx-auto px-6 py-6 flex flex-col justify-center fade-in">
+    <div className="min-h-[calc(100dvh-60px)] max-w-6xl mx-auto px-6 py-6 flex flex-col justify-center fade-in">
       <div className="text-center max-w-3xl mx-auto">
         <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight text-[color:var(--fg)]">
           {t(
