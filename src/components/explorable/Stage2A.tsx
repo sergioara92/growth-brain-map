@@ -399,7 +399,7 @@ export default function Stage2A({
         </div>
 
         <p className="mt-4 text-center text-[13px] text-[color:var(--muted)]" aria-live="polite">
-          {t(lang, `Calles construidas: ${built} | Autopistas: ${highways}`, `Streets built: ${built} | Highways: ${highways}`)}
+          {t(lang, `Calles: ${built} · Autopistas: ${highways} / ${HIGHWAY_GOAL}`, `Streets: ${built} · Highways: ${highways} / ${HIGHWAY_GOAL}`)}
         </p>
       </div>
     </div>
