@@ -87,13 +87,12 @@ export default function Stage5Brains({ lang, onNext }: { lang: Lang; onNext: () 
               key={k}
               type="button"
               onClick={() => select(k)}
-              className="px-5 py-2 rounded-full font-bold text-sm transition-all"
+              className={`px-5 py-2 rounded-full font-bold text-sm transition-all ${!isVisited ? "animate-pulse" : ""}`}
               style={{
                 backgroundColor: c.bg,
                 color: "white",
                 boxShadow: isActive ? `0 0 0 3px ${c.ring}, 0 6px 16px rgba(0,0,0,0.35)` : "0 2px 6px rgba(0,0,0,0.25)",
                 transform: isActive ? "translateY(-2px)" : "none",
-                animation: !isVisited ? "pulse 1.8s ease-in-out infinite" : undefined,
                 minWidth: 140,
               }}
             >
