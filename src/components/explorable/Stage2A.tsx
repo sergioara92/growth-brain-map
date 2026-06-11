@@ -92,6 +92,7 @@ export default function Stage2A({
     if (nxt === 4) spawnParticles(mx, my, "gold");
   };
 
+  const HIGHWAY_GOAL = 4;
   const progressLabel = (() => {
     if (built === 0) return t(lang, "Haz clic en una calle para empezar.", "Click a street to get started.");
     if (built <= 2) return t(lang, "Estás construyendo caminos de tierra...", "You're building dirt roads...");
