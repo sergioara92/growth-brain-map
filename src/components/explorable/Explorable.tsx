@@ -27,7 +27,7 @@ export default function Explorable() {
   const next = () => setStage((s) => Math.min(7, s + 1));
 
   return (
-    <main className="min-h-dvh pt-16 pb-12">
+    <main className="min-h-dvh pt-[100px] sm:pt-[130px] pb-12">
       <LangToggle lang={lang} setLang={setLang} />
       <ProgressBar stage={stage} lang={lang} />
 
