@@ -1,59 +1,55 @@
-# Stage 3 redesign: "Pick a challenge"
+# Stage 4 (Mistake section) redesign
 
-Goal: fit everything on one screen (no scrolling), instructions + choices on the left, a single brain visualization on the right showing a small brain nested inside a bigger brain.
+Rewrites `src/components/explorable/Stage4.tsx` only. No changes to other stages, `BrainScanner`, `Explorable` wiring, or i18n infrastructure beyond adding new strings via inline `t(lang, ...)` calls.
 
-## Layout (`src/components/explorable/Stage3.tsx`)
+## Layout (no-scroll, centered)
 
-Two-column grid that fills the viewport without scroll:
+Mirror Stage 3's pattern:
+- Outer: `h-[calc(100vh-160px)] max-w-6xl mx-auto px-4 py-3 grid md:grid-cols-2 gap-6 items-center`
+- Condense the intro copy ("You're going to make mistakes." block) into a single compact header above the grid so the two columns fit on one screen at 892×575.
 
-```text
-+----------------------------------------------------+
-| h2: Your turn — pick a challenge                   |
-+-------------------------+--------------------------+
-| LEFT (instructions +    | RIGHT (nested brain)     |
-|   choices)              |                          |
-|                         |   ___________            |
-| • Intro line            |  /           \           |
-| • "What to do" box      | |  big brain  |          |
-|                         | |   ______    |          |
-| [Practice exercises]    | |  /  sm  \   |          |
-| [The hard problem]      | | | brain  |  |          |
-|                         | |  \______/   |          |
-| reflection (after pick) |  \___________/           |
-| Next button             |   caption                |
-+-------------------------+--------------------------+
-```
+## Left column — interactive problem
 
-- Outer container: `h-[calc(100vh-160px)] grid md:grid-cols-2 gap-6 px-6 py-4` so it never overflows. Inner columns use `min-h-0` and condensed text sizes.
-- Trim copy and paddings so left column fits without scrolling at typical heights.
-- Stack to single column on small widths (mobile only).
+- Problem statement: `x² + 5x + 6 = 0` (kept).
+- **Answer input**: large, very visible `<input type="text">` (placeholder "x = ?"), teal border, big font. Accepts `-2`, `-3`, `x=-2`, `-2,-3`, etc. Correct if the parsed value(s) include `-2` or `-3`.
+- **Verify button** right next to / under the input ("Check answer" / "Verificar"), coral background, equally prominent.
+- **Countdown timer**: prominent badge (large mono digits, teal) showing `5…0`. Starts at 5s when stage mounts and after every attempt. When it reaches 0 without a click, it auto-counts as a missed attempt (same as a wrong answer) and resets to 5.
+- Each click of Verify (or timer expiry):
+  - increments `attempts`
+  - resets the timer to 5
+  - clears the input
+  - shows the same per-attempt message currently in `attemptLabel` (1st…5th attempt strings preserved)
+  - shows the same ✗ / ◑ / ✓ icon row
+  - shows the "Each attempt releases neurotransmitters…" italic line from attempt ≥ 2
+- If the answer is correct, mark success (still counts as an attempt, switches the badge to ✓ and stops the timer).
 
-## Choice interaction
+## Right column — nested triple brain
 
-- Two buttons stacked vertically on the left (compact). Selecting one sets `choice` and immediately lights the corresponding brain (no 1s delay before reflection — show reflection text right under the buttons).
-- Next button enabled after a choice is made.
+New inline `TripleNestedBrain` SVG component (same approach as Stage 3's `NestedBrain`), centered in the column:
+- **Large** outer brain silhouette: ~12 nodes / 16 links
+- **Medium** brain inscribed inside it: ~7 nodes / 9 links
+- **Small** brain inscribed inside the medium: ~4 nodes / 3 links
+- Default: all three drawn as dim outlines (teal stroke, low opacity), no glow.
+- Lighting rule (cumulative, teal `#00C2C7` + `pulseGlow` + drop-shadow):
+  - `attempts ≥ 1` → small brain lights up
+  - `attempts ≥ 3` → medium brain lights up (small stays lit)
+  - `attempts ≥ 5` → large brain lights up (all three lit, strongest glow on large)
+- Caption under the SVG: short dynamic label, e.g. "Connections built: N" (kept from current).
 
-## Brain visualization (right column)
+## Next button + banner
 
-One composite SVG, no stacking of two separate scanners:
-- Outer "big" brain silhouette (the bigger brain with many connections).
-- Inner "small" brain silhouette drawn inside it, scaled down and centered.
-- Both drawn dim/outline by default.
-- On `choice === "easy"`: the **small inner brain** lights up with a few connections (4 nodes, 2–3 links).
-- On `choice === "hard"`: the **big outer brain** lights up with many more connections (8–10 nodes spread across the silhouette, ~10–12 links forming a dense network). The small brain dims further.
-- Caption under the SVG changes based on choice.
+- Keep the success banner ("This is what real learning feels like…") at `attempts ≥ 5`, repositioned so it doesn't push layout (absolute overlay on the right column).
+- Keep `NextButton` appearing at `attempts ≥ 3`, placed in the left column under the messages so it stays in-viewport.
 
-Implementation: build the composite inline in `Stage3.tsx` as a single `<svg viewBox="0 0 320 280">` rather than reusing `BrainScanner` (which is a fixed 4-zone layout). Define two node arrays (`SMALL_NODES` ~4 points, `BIG_NODES` ~8–10 points) and corresponding link arrays. Render outline paths always; render nodes + links with opacity driven by `choice`. Reuse the existing `pulseGlow` animation and teal color `#00C2C7`.
+## Strings (added via `t(lang, es, en)`)
 
-`BrainScanner.tsx` is not modified.
-
-## Copy
-
-Keep current ES/EN strings for title, intro, "what to do", and the two option labels/descriptions. Shorten the reflection lines slightly so they fit without scroll. Add new captions for the nested brain:
-- default: "Your brain is ready. Make a choice." / "Tu cerebro está listo. Elegí."
-- easy: "Small brain, few new connections." / "Cerebro pequeño, pocas conexiones nuevas."
-- hard: "Bigger brain, many new connections." / "Cerebro más grande, muchas conexiones nuevas."
+- "Tu respuesta" / "Your answer"
+- "Verificar" / "Check"
+- "Tiempo" / "Time"
+- "Se acabó el tiempo — cuenta como intento" / "Time's up — counts as an attempt"
 
 ## Out of scope
 
-No changes to other stages, `BrainScanner`, `Explorable` wiring, or i18n infrastructure beyond adding the new caption strings inline via `t()`.
+- No business-logic changes to `Explorable` (still uses `attempts` / `setAttempts` / `onNext` props).
+- No changes to `BrainScanner` — Stage 4 stops using it and renders its own nested SVG, like Stage 3 does.
+- No new files; everything lives in `Stage4.tsx`.
