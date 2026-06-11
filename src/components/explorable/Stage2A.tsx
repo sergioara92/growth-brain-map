@@ -125,13 +125,13 @@ export default function Stage2A({
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.6fr)] gap-8 items-center h-[calc(100vh-140px)] overflow-hidden fade-in">
+    <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.6fr)] gap-6 items-stretch h-[calc(100dvh-240px)] min-h-[520px] overflow-hidden fade-in">
       {/* TEXT */}
-      <div>
-        <h2 className="font-bold text-[color:var(--teal)] text-[22px] md:text-[26px] leading-tight">
+      <div className="flex flex-col min-h-0 overflow-hidden">
+        <h2 className="font-bold text-[color:var(--teal)] text-[20px] md:text-[22px] leading-tight">
           {t(lang, "Tu cerebro funciona como una ciudad", "Your brain works like a city")}
         </h2>
-        <div className="mt-3 space-y-2" style={{ fontSize: 14.5, lineHeight: 1.5, maxWidth: 480 }}>
+        <div className="mt-2 space-y-1.5" style={{ fontSize: 13.5, lineHeight: 1.45, maxWidth: 480 }}>
           {t(
             lang,
             `Cada vez que aprendes algo nuevo, se construye una nueva calle entre dos lugares que antes no estaban conectados.|Al principio esa calle es un camino de tierra — lento y difícil. Pero cada vez que practicas, se pavimenta, se ensancha, y con el tiempo se convierte en una autopista.|Ahora reemplaza los barrios por neuronas y las calles por conexiones entre ellas — y tienes exactamente lo que pasa en tu cerebro cuando aprendes.`,
@@ -141,13 +141,13 @@ export default function Stage2A({
             .map((p, i) => <p key={i}>{p}</p>)}
         </div>
         <div
-          className="mt-3 rounded-lg border border-[color:var(--teal)]/40 bg-[color:var(--teal)]/5 p-3 text-[13px] leading-snug"
+          className="mt-2 rounded-lg border border-[color:var(--teal)]/40 bg-[color:var(--teal)]/5 p-2.5 text-[12.5px] leading-snug"
           style={{ maxWidth: 480 }}
         >
           <p className="font-bold text-[color:var(--teal)] mb-1">
             {t(lang, "Cómo jugar", "How to play")}
           </p>
-          <ul className="list-disc pl-5 space-y-1">
+          <ul className="list-disc pl-5 space-y-0.5">
             <li>
               {t(
                 lang,
@@ -165,8 +165,8 @@ export default function Stage2A({
           </ul>
         </div>
 
-        <p className="mt-2 font-bold text-[color:var(--teal)] text-[14px]" aria-live="polite">{progressLabel}</p>
-        <p className="mt-1 text-[12px] text-[color:var(--muted)]" aria-live="polite">
+        <p className="mt-1.5 font-bold text-[color:var(--teal)] text-[13px]" aria-live="polite">{progressLabel}</p>
+        <p className="mt-0.5 text-[11px] text-[color:var(--muted)]" aria-live="polite">
           {t(
             lang,
             `Autopistas: ${highways} / ${HIGHWAY_GOAL}`,
@@ -174,12 +174,12 @@ export default function Stage2A({
           )}
         </p>
 
-        <div className="mt-3">
+        <div className="mt-2">
           <NextButton onClick={onSubNext} disabled={highways < HIGHWAY_GOAL} pulse={highways === HIGHWAY_GOAL}>
             {t(lang, "Siguiente →", "Next →")}
           </NextButton>
           {highways < HIGHWAY_GOAL && (
-            <p className="mt-2 text-[12px] text-[color:var(--muted)]">
+            <p className="mt-1.5 text-[11px] text-[color:var(--muted)]">
               {t(
                 lang,
                 `Necesitás ${HIGHWAY_GOAL} autopistas para continuar.`,
@@ -191,7 +191,7 @@ export default function Stage2A({
       </div>
 
       {/* SIM */}
-      <div className="relative rounded-2xl p-3 transition-colors duration-500" style={{ backgroundColor: bg }}>
+      <div className="relative rounded-2xl p-3 transition-colors duration-500 flex flex-col min-h-0 h-full" style={{ backgroundColor: bg }}>
         {banner === "show" && (
           <div className="absolute top-0 left-0 right-0 z-10 bg-[color:var(--teal)] text-[color:var(--bg)] p-3 text-sm font-bold text-center slide-down rounded-t-2xl">
             {t(
@@ -202,14 +202,14 @@ export default function Stage2A({
           </div>
         )}
 
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 items-start">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 items-stretch flex-1 min-h-0">
           {/* CITY */}
-          <div className="flex flex-col items-center">
-            <p className="text-[12px] uppercase tracking-[0.15em] text-[color:var(--teal)] mb-2">
+          <div className="flex flex-col items-center min-h-0">
+            <p className="text-[12px] uppercase tracking-[0.15em] text-[color:var(--teal)] mb-1 shrink-0">
               {t(lang, "Ciudad", "City")}
             </p>
-            <div className="relative" style={{ width: SIZE, height: SIZE }}>
-              <svg width={SIZE} height={SIZE} className="max-w-full">
+            <div className="relative w-full flex-1 min-h-0 max-w-[400px] aspect-square mx-auto">
+              <svg width="100%" height="100%" viewBox={`0 0 ${SIZE} ${SIZE}`} preserveAspectRatio="xMidYMid meet" className="absolute inset-0">
                 <defs>
                   <filter id="goldGlow" x="-50%" y="-50%" width="200%" height="200%">
                     <feGaussianBlur stdDeviation="3" result="b" />
@@ -278,35 +278,34 @@ export default function Stage2A({
                 )}
               </svg>
 
-              <div className="absolute inset-0 pointer-events-none">
+              <svg width="100%" height="100%" viewBox={`0 0 ${SIZE} ${SIZE}`} preserveAspectRatio="xMidYMid meet" className="absolute inset-0 pointer-events-none">
                 {particles.map((p) => (
-                  <div
+                  <rect
                     key={p.id}
+                    x={p.x - 3}
+                    y={p.y - 3}
+                    width={6}
+                    height={6}
+                    fill={p.kind === "dirt" ? "#8B6914" : "#FFD166"}
+                    rx={p.kind === "dirt" ? 3 : 0}
                     style={{
-                      position: "absolute",
-                      left: p.x,
-                      top: p.y,
-                      width: p.kind === "dirt" ? 6 : 6,
-                      height: 6,
-                      marginLeft: -3,
-                      marginTop: -3,
-                      background: p.kind === "dirt" ? "#8B6914" : "#FFD166",
-                      borderRadius: p.kind === "dirt" ? "50%" : 0,
-                      transform: p.kind === "gold" ? "rotate(45deg)" : undefined,
                       "--dx": `${p.dx}px`,
                       "--dy": `${p.dy}px`,
                       animation: `particleOut ${p.kind === "dirt" ? 400 : 600}ms ease-out forwards`,
+                      transform: p.kind === "gold" ? "rotate(45deg)" : undefined,
+                      transformOrigin: `${p.x}px ${p.y}px`,
                     } as React.CSSProperties}
                   />
                 ))}
-              </div>
+              </svg>
 
               {!hintDismissed && (
                 <div
                   className="absolute pointer-events-none text-center"
                   style={{
-                    left: (pos(0, 0).x + pos(0, 1).x) / 2 - 90,
-                    top: pos(0, 0).y - 50,
+                    left: `${((pos(0, 0).x + pos(0, 1).x) / 2 / SIZE) * 100}%`,
+                    top: `${(pos(0, 0).y / SIZE) * 100 - 8}%`,
+                    transform: "translateX(-50%)",
                     width: 180,
                     animation: "arrowPulse 1.5s ease-in-out infinite",
                   }}
@@ -321,84 +320,86 @@ export default function Stage2A({
           </div>
 
           {/* NEURONS */}
-          <div className="flex flex-col items-center">
-            <p className="text-[12px] uppercase tracking-[0.15em] text-[color:var(--teal)] mb-2">
+          <div className="flex flex-col items-center min-h-0">
+            <p className="text-[12px] uppercase tracking-[0.15em] text-[color:var(--teal)] mb-1 shrink-0">
               {t(lang, "Neuronas", "Neurons")}
             </p>
-            <svg width={SIZE} height={SIZE} viewBox={`-30 -30 ${SIZE + 60} ${SIZE + 60}`} className="max-w-full">
-              <defs>
-                <filter id="teaLineGlow" x="-50%" y="-50%" width="200%" height="200%">
-                  <feGaussianBlur stdDeviation="2.5" result="b" />
-                  <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
-                </filter>
-                <radialGradient id="neuronBodyGlow">
-                  <stop offset="0%" stopColor="#00C2C7" stopOpacity="0.35" />
-                  <stop offset="100%" stopColor="#00C2C7" stopOpacity="0" />
-                </radialGradient>
-              </defs>
+            <div className="w-full flex-1 min-h-0 max-w-[400px] aspect-square mx-auto">
+              <svg width="100%" height="100%" viewBox={`-30 -30 ${SIZE + 60} ${SIZE + 60}`} preserveAspectRatio="xMidYMid meet">
+                <defs>
+                  <filter id="teaLineGlow" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="2.5" result="b" />
+                    <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+                  </filter>
+                  <radialGradient id="neuronBodyGlow">
+                    <stop offset="0%" stopColor="#00C2C7" stopOpacity="0.35" />
+                    <stop offset="100%" stopColor="#00C2C7" stopOpacity="0" />
+                  </radialGradient>
+                </defs>
 
-              {edges.map((e) => {
-                const lvl = connections[e.id] ?? 0;
-                if (lvl === 0) return null;
-                const p1 = pos(...e.from);
-                const p2 = pos(...e.to);
-                const path = `M ${p1.x} ${p1.y} L ${p2.x} ${p2.y}`;
-                if (lvl === 1) return <line key={`nl-${e.id}`} x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} stroke="#554488" strokeWidth={1} opacity={0.25} strokeDasharray="4 3" />;
-                if (lvl === 2) return <line key={`nl-${e.id}`} x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} stroke="#00C2C7" strokeWidth={1.5} opacity={0.55} />;
-                if (lvl === 3) return <line key={`nl-${e.id}`} x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} stroke="#00C2C7" strokeWidth={2.5} style={{ animation: "slowPulse 2s ease-in-out infinite" }} />;
-                return (
-                  <g key={`nl-${e.id}`}>
-                    <line x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} stroke="#00C2C7" strokeWidth={3} opacity={1} filter="url(#teaLineGlow)" />
-                    <circle r={4} fill="#FFD166">
-                      <animateMotion dur="1.2s" repeatCount="indefinite" path={path} />
-                    </circle>
-                  </g>
-                );
-              })}
-
-              {Array.from({ length: GRID }).map((_, r) =>
-                Array.from({ length: GRID }).map((_, c) => {
-                  const p = pos(r, c);
-                  const act = nodeActive(r, c);
-                  const lit = act >= 2;
-                  const expanded = act >= 3;
-                  const dendStroke = lit ? "#00C2C7" : "#6655AA";
-                  const scale = expanded ? 1.15 : 1;
-                  const armOffset = expanded ? 4 : 0;
+                {edges.map((e) => {
+                  const lvl = connections[e.id] ?? 0;
+                  if (lvl === 0) return null;
+                  const p1 = pos(...e.from);
+                  const p2 = pos(...e.to);
+                  const path = `M ${p1.x} ${p1.y} L ${p2.x} ${p2.y}`;
+                  if (lvl === 1) return <line key={`nl-${e.id}`} x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} stroke="#554488" strokeWidth={1} opacity={0.25} strokeDasharray="4 3" />;
+                  if (lvl === 2) return <line key={`nl-${e.id}`} x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} stroke="#00C2C7" strokeWidth={1.5} opacity={0.55} />;
+                  if (lvl === 3) return <line key={`nl-${e.id}`} x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} stroke="#00C2C7" strokeWidth={2.5} style={{ animation: "slowPulse 2s ease-in-out infinite" }} />;
                   return (
-                    <g key={`nr-${r}-${c}`} style={{ transform: `scale(${scale})`, transformOrigin: `${p.x}px ${p.y}px`, transition: "transform 300ms" }}>
-                      {[0, 60, 120, 180, 240, 300].map((deg, i) => {
-                        const a = (deg * Math.PI) / 180;
-                        const startX = p.x + Math.cos(a) * (18 + armOffset);
-                        const startY = p.y + Math.sin(a) * (18 + armOffset);
-                        const endX = p.x + Math.cos(a) * (18 + armOffset + 26);
-                        const endY = p.y + Math.sin(a) * (18 + armOffset + 26);
-                        const fork1A = a - 0.45;
-                        const fork2A = a + 0.45;
-                        const f1x = endX + Math.cos(fork1A) * 12;
-                        const f1y = endY + Math.sin(fork1A) * 12;
-                        const f2x = endX + Math.cos(fork2A) * 12;
-                        const f2y = endY + Math.sin(fork2A) * 12;
-                        return (
-                          <g key={i}>
-                            <line x1={startX} y1={startY} x2={endX} y2={endY} stroke={dendStroke} strokeWidth={1.4} style={{ transition: "stroke 300ms" }} />
-                            <line x1={endX} y1={endY} x2={f1x} y2={f1y} stroke={dendStroke} strokeWidth={1.1} />
-                            <line x1={endX} y1={endY} x2={f2x} y2={f2y} stroke={dendStroke} strokeWidth={1.1} />
-                          </g>
-                        );
-                      })}
-                      <line x1={p.x} y1={p.y + 18} x2={p.x + 5} y2={p.y + 40} stroke={dendStroke} strokeWidth={2.2} />
-                      {lit && <circle cx={p.x} cy={p.y} r={26} fill="url(#neuronBodyGlow)" />}
-                      <circle cx={p.x} cy={p.y} r={18} fill="#1A0A3B" stroke="#00C2C7" strokeWidth={1.5} />
+                    <g key={`nl-${e.id}`}>
+                      <line x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} stroke="#00C2C7" strokeWidth={3} opacity={1} filter="url(#teaLineGlow)" />
+                      <circle r={4} fill="#FFD166">
+                        <animateMotion dur="1.2s" repeatCount="indefinite" path={path} />
+                      </circle>
                     </g>
                   );
-                }),
-              )}
-            </svg>
+                })}
+
+                {Array.from({ length: GRID }).map((_, r) =>
+                  Array.from({ length: GRID }).map((_, c) => {
+                    const p = pos(r, c);
+                    const act = nodeActive(r, c);
+                    const lit = act >= 2;
+                    const expanded = act >= 3;
+                    const dendStroke = lit ? "#00C2C7" : "#6655AA";
+                    const scale = expanded ? 1.15 : 1;
+                    const armOffset = expanded ? 4 : 0;
+                    return (
+                      <g key={`nr-${r}-${c}`} style={{ transform: `scale(${scale})`, transformOrigin: `${p.x}px ${p.y}px`, transition: "transform 300ms" }}>
+                        {[0, 60, 120, 180, 240, 300].map((deg, i) => {
+                          const a = (deg * Math.PI) / 180;
+                          const startX = p.x + Math.cos(a) * (18 + armOffset);
+                          const startY = p.y + Math.sin(a) * (18 + armOffset);
+                          const endX = p.x + Math.cos(a) * (18 + armOffset + 26);
+                          const endY = p.y + Math.sin(a) * (18 + armOffset + 26);
+                          const fork1A = a - 0.45;
+                          const fork2A = a + 0.45;
+                          const f1x = endX + Math.cos(fork1A) * 12;
+                          const f1y = endY + Math.sin(fork1A) * 12;
+                          const f2x = endX + Math.cos(fork2A) * 12;
+                          const f2y = endY + Math.sin(fork2A) * 12;
+                          return (
+                            <g key={i}>
+                              <line x1={startX} y1={startY} x2={endX} y2={endY} stroke={dendStroke} strokeWidth={1.4} style={{ transition: "stroke 300ms" }} />
+                              <line x1={endX} y1={endY} x2={f1x} y2={f1y} stroke={dendStroke} strokeWidth={1.1} />
+                              <line x1={endX} y1={endY} x2={f2x} y2={f2y} stroke={dendStroke} strokeWidth={1.1} />
+                            </g>
+                          );
+                        })}
+                        <line x1={p.x} y1={p.y + 18} x2={p.x + 5} y2={p.y + 40} stroke={dendStroke} strokeWidth={2.2} />
+                        {lit && <circle cx={p.x} cy={p.y} r={26} fill="url(#neuronBodyGlow)" />}
+                        <circle cx={p.x} cy={p.y} r={18} fill="#1A0A3B" stroke="#00C2C7" strokeWidth={1.5} />
+                      </g>
+                    );
+                  }),
+                )}
+              </svg>
+            </div>
           </div>
         </div>
 
-        <p className="mt-4 text-center text-[13px] text-[color:var(--muted)]" aria-live="polite">
+        <p className="mt-2 text-center text-[12px] text-[color:var(--muted)] shrink-0" aria-live="polite">
           {t(lang, `Calles: ${built} · Autopistas: ${highways} / ${HIGHWAY_GOAL}`, `Streets: ${built} · Highways: ${highways} / ${HIGHWAY_GOAL}`)}
         </p>
       </div>
